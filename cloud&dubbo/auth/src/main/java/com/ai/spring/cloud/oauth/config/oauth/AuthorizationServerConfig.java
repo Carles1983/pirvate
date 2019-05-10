@@ -20,6 +20,7 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 
 import com.ai.spring.cloud.oauth.config.error.AuthWebResponseExceptionTranslator;
 import com.ai.spring.cloud.oauth.service.AuthUserDetailService;
+import com.ai.spring.cloud.oauth.service.MongoClientDetailsService;
 
 @Configuration
 @EnableAuthorizationServer
@@ -33,6 +34,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Autowired
 	private AuthUserDetailService userDetailService;
+	
+	@Autowired
+	private MongoClientDetailsService clientDetailsService;
 
 	@Bean
 	public TokenStore tokenStore() {
@@ -52,12 +56,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	 */
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		clients.withClientDetails(clientDetails());
-	}
-
-	@Bean
-	public ClientDetailsService clientDetails() {
-		return new MongoClientDetailsService();
+		clients.withClientDetails(clientDetailsService);
 	}
 
 	@Bean
@@ -88,7 +87,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		DefaultTokenServices tokenServices = new DefaultTokenServices();
 		tokenServices.setTokenStore(tokenStore());
 		tokenServices.setSupportRefreshToken(true);
-		tokenServices.setClientDetailsService(clientDetails());
+		tokenServices.setClientDetailsService(clientDetailsService);
 		// token有效期自定义设置，默认12小时
 		tokenServices.setAccessTokenValiditySeconds(60 * 60 * 12);
 		// refresh_token默认30天
