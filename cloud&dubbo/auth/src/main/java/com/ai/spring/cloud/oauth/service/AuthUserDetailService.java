@@ -12,39 +12,44 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.ai.spring.cloud.oauth.mongo.document.PermissionDoc;
+import com.ai.spring.cloud.oauth.mongo.document.RoleDoc;
+import com.ai.spring.cloud.oauth.mongo.document.UserDoc;
+import com.ai.spring.cloud.oauth.mongo.repository.UserRepository;
+
 @Service
 public class AuthUserDetailService implements UserDetailsService {
-	
-	@Autowired
-    private MemberDao memberDao;
 
-    @Override
-    public UserDetails loadUserByUsername(String memberName) throws UsernameNotFoundException {
-        Member member = memberDao.findByMemberName(memberName);
-        if (member == null) {
-            throw new UsernameNotFoundException(memberName);
-        }
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        // 可用性 :true:可用 false:不可用
-        boolean enabled = true;
-        // 过期性 :true:没过期 false:过期
-        boolean accountNonExpired = true;
-        // 有效性 :true:凭证有效 false:凭证无效
-        boolean credentialsNonExpired = true;
-        // 锁定性 :true:未锁定 false:已锁定
-        boolean accountNonLocked = true;
-        for (Role role : member.getRoles()) {
-            //角色必须是ROLE_开头，可以在数据库中设置
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getRoleName());
-            grantedAuthorities.add(grantedAuthority);
-            //获取权限
-            for (Permission permission : role.getPermissions()) {
-                GrantedAuthority authority = new SimpleGrantedAuthority(permission.getUri());
-                grantedAuthorities.add(authority);
-            }
-        }
-        User user = new User(member.getMemberName(), member.getPassword(),
-                enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, grantedAuthorities);
-        return user;
-    }
+	@Autowired
+	private UserRepository userDao;
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		UserDoc userDoc = userDao.findUserByName(username);
+		if (userDoc == null) {
+			throw new UsernameNotFoundException(username);
+		}
+		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+		// 可用性 :true:可用 false:不可用
+		boolean enabled = true;
+		// 过期性 :true:没过期 false:过期
+		boolean accountNonExpired = true;
+		// 有效性 :true:凭证有效 false:凭证无效
+		boolean credentialsNonExpired = true;
+		// 锁定性 :true:未锁定 false:已锁定
+		boolean accountNonLocked = true;
+		for (RoleDoc role : userDoc.getRoles()) {
+			// 角色必须是ROLE_开头，可以在数据库中设置
+			GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getName());
+			grantedAuthorities.add(grantedAuthority);
+			// 获取权限
+			for (PermissionDoc permission : role.getPermissions()) {
+				GrantedAuthority authority = new SimpleGrantedAuthority(permission.getUri());
+				grantedAuthorities.add(authority);
+			}
+		}
+		User user = new User(userDoc.getName(), userDoc.getPassword(), enabled, accountNonExpired,
+				credentialsNonExpired, accountNonLocked, grantedAuthorities);
+		return user;
+	}
 }
