@@ -19,6 +19,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import com.ai.spring.cloud.oauth.config.error.AuthWebResponseExceptionTranslator;
+import com.ai.spring.cloud.oauth.service.AuthUserDetailService;
 
 @Configuration
 @EnableAuthorizationServer
