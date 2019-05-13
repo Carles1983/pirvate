@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class ClientDetailDoc {
 	@Id
+	private String id;
 	private String client_id;
 	private String resource_ids;
 	private String client_secret;
