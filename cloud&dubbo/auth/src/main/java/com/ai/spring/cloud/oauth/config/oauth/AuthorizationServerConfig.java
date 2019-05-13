@@ -88,9 +88,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		tokenServices.setSupportRefreshToken(true);
 		tokenServices.setClientDetailsService(clientDetailsService);
 		// token有效期自定义设置，默认12小时
-		tokenServices.setAccessTokenValiditySeconds(60 * 60 * 12);
+//		tokenServices.setAccessTokenValiditySeconds(60 * 60 * 12);
 		// refresh_token默认30天
-		tokenServices.setRefreshTokenValiditySeconds(60 * 60 * 24 * 7);
+//		tokenServices.setRefreshTokenValiditySeconds(60 * 60 * 24 * 7);
 		return tokenServices;
 	}
 
