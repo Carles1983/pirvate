@@ -11,7 +11,7 @@ import lombok.Data;
 public class UserDoc {
 	@Id
 	private String id;
-    private String Name;
+    private String name;
     private String password;
     private String mobile;
     private String email;
