@@ -3,6 +3,8 @@ package com.ai.spring.cloud.oauth.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
@@ -18,11 +20,23 @@ public class MongoClientDetailsService implements ClientDetailsService {
 	@Autowired
 	private ClientDetailRepository clientDetailReository;
 	
+	@Autowired
+	private RedisTemplate<String, Object> redisTemplate;
+	
+	private static final String CLIENT_REDIS_KEY = "CLIENT_IN_REDIS";
+	
 	@Override
 	public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
+		HashOperations<String, String, Object> hashOp = redisTemplate.opsForHash();
+		if(hashOp.hasKey(CLIENT_REDIS_KEY, clientId)) {
+			return (ClientDetails) hashOp.get(CLIENT_REDIS_KEY, clientId);
+		}
+		
 		Optional<ClientDetailDoc> clientDoc = clientDetailReository.findById(clientId);
 		ClientDetailDoc doc = clientDoc.get();
-		return ClientDetailsConverter.convert(doc);
+		ClientDetails cds = ClientDetailsConverter.convert(doc);
+		hashOp.put(CLIENT_REDIS_KEY, clientId, cds);
+		return cds;
 	}
 
 }
