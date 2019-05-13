@@ -1,7 +1,5 @@
 package com.ai.spring.cloud.oauth.service;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -32,9 +30,8 @@ public class MongoClientDetailsService implements ClientDetailsService {
 			return (ClientDetails) hashOp.get(CLIENT_REDIS_KEY, clientId);
 		}
 		
-		Optional<ClientDetailDoc> clientDoc = clientDetailReository.findById(clientId);
-		ClientDetailDoc doc = clientDoc.get();
-		ClientDetails cds = ClientDetailsConverter.convert(doc);
+		ClientDetailDoc clientDoc = clientDetailReository.findByClientId(clientId);
+		ClientDetails cds = ClientDetailsConverter.convert(clientDoc);
 		hashOp.put(CLIENT_REDIS_KEY, clientId, cds);
 		return cds;
 	}
