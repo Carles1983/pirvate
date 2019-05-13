@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.ai.spring.cloud.oauth.mongo.document.PermissionDoc;
 import com.ai.spring.cloud.oauth.mongo.document.RoleDoc;
@@ -43,9 +44,11 @@ public class AuthUserDetailService implements UserDetailsService {
 			GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getName());
 			grantedAuthorities.add(grantedAuthority);
 			// 获取权限
-			for (PermissionDoc permission : role.getPermissions()) {
-				GrantedAuthority authority = new SimpleGrantedAuthority(permission.getUri());
-				grantedAuthorities.add(authority);
+			if(!CollectionUtils.isEmpty(role.getPermissions())) {
+				for (PermissionDoc permission : role.getPermissions()) {
+					GrantedAuthority authority = new SimpleGrantedAuthority(permission.getUri());
+					grantedAuthorities.add(authority);
+				}
 			}
 		}
 		User user = new User(userDoc.getName(), userDoc.getPassword(), enabled, accountNonExpired,
