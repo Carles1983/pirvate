@@ -19,13 +19,13 @@ public class MongoClientDetailsService implements ClientDetailsService {
 	private ClientDetailRepository clientDetailReository;
 	
 	@Autowired
-	private RedisTemplate<String, Object> redisTemplate;
+	private RedisTemplate<Object, Object> redisTemplate;
 	
 	private static final String CLIENT_REDIS_KEY = "CLIENT_IN_REDIS";
 	
 	@Override
 	public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
-		HashOperations<String, String, Object> hashOp = redisTemplate.opsForHash();
+		HashOperations<Object, Object, Object> hashOp = redisTemplate.opsForHash();
 		if(hashOp.hasKey(CLIENT_REDIS_KEY, clientId)) {
 			return (ClientDetails) hashOp.get(CLIENT_REDIS_KEY, clientId);
 		}
