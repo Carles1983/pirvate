@@ -9,15 +9,15 @@ import com.ai.spring.cloud.oauth.mongo.document.ClientDetailDoc;
 public class ClientDetailsConverter {
 
 	public static ClientDetails convert(ClientDetailDoc doc) {
-		BaseClientDetails clientDetails = new BaseClientDetails(doc.getClient_id(), doc.getResource_ids(),
-				doc.getScope(), doc.getAuthorized_grant_types(), null, doc.getWeb_server_redirect_uri());
-		clientDetails.setClientSecret(doc.getClient_secret());
+		BaseClientDetails clientDetails = new BaseClientDetails(doc.getClientId(), doc.getResourceIds(),
+				doc.getScope(), doc.getAuthorizedGrantTypes(), null, doc.getWebServerRedirectUri());
+		clientDetails.setClientSecret(doc.getClientSecret());
 
-		if (StringUtils.isNotEmpty(doc.getAdditional_information())) {
-			clientDetails.addAdditionalInformation("information", doc.getAdditional_information());
+		if (StringUtils.isNotEmpty(doc.getAdditionalInformation())) {
+			clientDetails.addAdditionalInformation("information", doc.getAdditionalInformation());
 		}
-		clientDetails.setAccessTokenValiditySeconds(doc.getAccess_token_validity());
-		clientDetails.setRefreshTokenValiditySeconds(doc.getRefresh_token_validity());
+		clientDetails.setAccessTokenValiditySeconds(doc.getAccessTokenValidity());
+		clientDetails.setRefreshTokenValiditySeconds(doc.getRefreshTokenValidity());
 
 		return clientDetails;
 	}
