@@ -73,5 +73,5 @@ public class OAuthOperationController {
 		UserDoc doc = userRepository.findUserByName(username);
 		return doc;
 	}
-	
+
 }
