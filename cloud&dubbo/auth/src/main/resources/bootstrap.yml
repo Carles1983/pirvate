@@ -13,3 +13,6 @@ spring:
         file-extension: yaml
         group: SPRING_CLOUD_GROUP
         prefix: auth
+logging:
+  level:
+    root: debug        
