@@ -2,6 +2,7 @@ package com.ai.spring.cloud.oauth.controller;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,12 @@ public class OAuthOperationController {
 		userDoc.setRoles(roleSet);
 		userRepository.save(userDoc);
 		return "success";
+	}
+	
+	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	public List<UserDoc> listUser(@RequestBody UserDoc userDoc) {
+		List<UserDoc> list = userRepository.findAll();
+		return list;
 	}
 	
 	@RequestMapping(value = "/role", method = RequestMethod.POST)
