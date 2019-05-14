@@ -15,4 +15,5 @@ spring:
         prefix: auth
 logging:
   level:
-    root: debug        
+    root: debug   
+  config: classpath:log4j2-spring.xml         
