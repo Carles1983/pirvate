@@ -1,5 +1,7 @@
 package com.ai.dubbo.controller;
 
+import org.apache.skywalking.apm.toolkit.trace.ActiveSpan;
+import org.apache.skywalking.apm.toolkit.trace.Trace;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +21,11 @@ public class ConsumerController {
 	@Value("${server.port}")
 	private int port;
 
+	@Trace
 	@RequestMapping(value = "/sayHello/{name}", method = RequestMethod.GET)
 	public String sayHello(@PathVariable String name) {
+		ActiveSpan.tag("consumer-port", String.valueOf(port));
+		ActiveSpan.tag("consumer-name", name);
 		return demoService.sayHello(name + "----> server port : " + port);
 	}
 
