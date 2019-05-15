@@ -17,53 +17,40 @@
 			</Policies>
 			<DefaultRolloverStrategy max="10" />
 		</RollingFile>
-		<NoSql name="databaseAppender">
-			<MongoDb3 databaseName="applicationDb" collectionName="applicationLog" server="10.21.14.164" port="27017" />
-		</NoSql>
 		<Async name="ASYNC">
 			<AppenderRef ref="RollingFile" />
 			<AppenderRef ref="STDOUT" />
 		</Async>
 	</Appenders>
 	<Loggers>
-		<logger name="org.quartz" level="warn" additivity="true">
+		<logger name="org.quartz" level="warn" additivity="false">
 			<AppenderRef ref="RollingFile" />
 		</logger>
 
-		<logger name="com.dangdang" level="warn" additivity="true">
+		<logger name="com.dangdang" level="warn" additivity="false">
 			<AppenderRef ref="RollingFile" />
 		</logger>
 
 		<logger name="org.apache.zookeeper" level="warn"
-			additivity="true">
+			additivity="false">
 			<AppenderRef ref="RollingFile" />
 		</logger>
 
 		<logger name="org.apache.curator" level="warn"
-			additivity="true">
+			additivity="false">
 			<AppenderRef ref="RollingFile" />
 		</logger>
 
 		<logger name="org.springframework" level="warn"
-			additivity="true">
+			additivity="false">
 			<AppenderRef ref="RollingFile" />
 		</logger>
 
-		<logger name="com.mongodb" level="warn" additivity="true">
+		<logger name="com.mongodb" level="warn" additivity="false">
 			<AppenderRef ref="RollingFile" />
 		</logger>
 
-		<logger name="com.alibaba.nacos" level="warn" additivity="true">
-			<AppenderRef ref="RollingFile" />
-		</logger>
-
-		<logger name="com.aii.ipaas.pushc" level="warn"
-			additivity="true">
-			<AppenderRef ref="RollingFile" />
-		</logger>
-
-		<logger name="com.aii.ipaas.pushc.define.dao" level="debug"
-			additivity="true">
+		<logger name="com.alibaba.nacos" level="warn" additivity="false">
 			<AppenderRef ref="RollingFile" />
 		</logger>
 
