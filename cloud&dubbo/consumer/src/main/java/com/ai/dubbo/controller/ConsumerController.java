@@ -28,5 +28,16 @@ public class ConsumerController {
 		ActiveSpan.tag("consumer-name", name);
 		return demoService.sayHello(name + "----> server port : " + port);
 	}
+	
+	@RequestMapping(value = "/timeout", method = RequestMethod.GET)
+    public String timeout(){
+        try{
+            //睡5秒，网关Hystrix3秒超时，会触发熔断降级操作
+            Thread.sleep(5000);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "timeout";
+    }
 
 }
