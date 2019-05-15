@@ -29,7 +29,7 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
 
 	@Override
 	public int getOrder() {
-		return Ordered.LOWEST_PRECEDENCE;
+		return Ordered.HIGHEST_PRECEDENCE;
 	}
 
 	@Override
@@ -38,9 +38,9 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
 		// 如果URL在不用过滤的集合中，直接执行下一步
 		if(!CollectionUtils.isEmpty(UrlAuthorityListener.urlNeedNoAuthList)) {
 			if(UrlAuthorityListener.urlNeedNoAuthList.contains(requestUrl)) {
-				chain.filter(exchange);
+				return chain.filter(exchange);
 			}
-		} else {
+		} 
 			// 获取Header中或者param中的token
 			String headerToken = exchange.getRequest().getHeaders().getFirst(TOKEN_IN_HEADER);
 			String paramToken = exchange.getRequest().getQueryParams().getFirst(TOKEN_IN_PARAM);
@@ -58,13 +58,13 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
 			if(token.startsWith("Bearer ")) {
 				token = token.replace("Bearer ", "").trim();
 			}
-			boolean oauthTokenNonExpired = redisTokenService.accessTokenInRedis(token);
-			if(!oauthTokenNonExpired) {
+			boolean tokenExist = redisTokenService.tokenExist(token);
+			if(!tokenExist) {
 				log.info("Token is expired.");
 				exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
 				return exchange.getResponse().setComplete();
 			}
-		}
+		
 		
 		return chain.filter(exchange);
 	}
