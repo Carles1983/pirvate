@@ -134,6 +134,13 @@
 			<artifactId>apm-toolkit-trace</artifactId>
 			<version>6.1.0</version>
 		</dependency>
+		
+		<!-- 熔断、降级 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<repositories>
