@@ -116,7 +116,7 @@
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-redis</artifactId>
+			<artifactId>spring-boot-starter-data-redis-reactive</artifactId>
 		</dependency>
 
 		<dependency>
@@ -134,7 +134,7 @@
 			<artifactId>apm-toolkit-trace</artifactId>
 			<version>6.1.0</version>
 		</dependency>
-		
+
 		<!-- 熔断、降级 -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
