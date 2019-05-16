@@ -39,5 +39,10 @@ public class ConsumerController {
         }
         return "timeout";
     }
+	
+	@RequestMapping(value = "/rate", method = RequestMethod.GET)
+    public String rate(){
+        return "rate";
+    }
 
 }
