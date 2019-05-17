@@ -1,4 +1,4 @@
-package com.aii.crm.common;
+package com.aii.crm.common.exception;
 
 import java.util.Map;
 import lombok.Data;
