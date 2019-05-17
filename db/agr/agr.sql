@@ -1,4 +1,16 @@
+/*
+SQLyog Ultimate v12.09 (64 bit)
+MySQL - 5.7.24-log : Database - agr
+*********************************************************************
+*/
 
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 CREATE DATABASE /*!32312 IF NOT EXISTS*/`agr` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
 USE `agr`;
@@ -1887,117 +1899,10 @@ CREATE TABLE `agr_usr_product_rela` (
   PRIMARY KEY (`RELA_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='合同用户产品表 按照客户ID分表\n每次创建该记录是，还需要保存账期信息';
 
-/*Table structure for table `ci_attach` */
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-DROP TABLE IF EXISTS `ci_attach`;
 
-CREATE TABLE `ci_attach` (
-  `ATTACH_ID` bigint(12) NOT NULL,
-  `BUSI_SHEET_ID` varchar(128) DEFAULT NULL COMMENT '业务主键，如comentid\n            ',
-  `ATTACH_TYPE` varchar(3) DEFAULT NULL COMMENT '1 客户交互comment',
-  `FILE_NAME` varchar(128) DEFAULT NULL,
-  `STORAGE_FILE_URI` varchar(1024) DEFAULT NULL COMMENT '存储介质上的文件唯一标示符',
-  `OP_ID` bigint(12) DEFAULT NULL,
-  `ORG_ID` bigint(12) DEFAULT NULL,
-  `DONE_DATE` datetime DEFAULT NULL,
-  `CREATE_DATE` datetime DEFAULT NULL,
-  `DONE_CODE` varchar(30) DEFAULT NULL,
-  `ATTACH_STATUS` varchar(3) DEFAULT NULL,
-  `REMARKS` varchar(1024) DEFAULT NULL,
-  `BUSI_TYPE_CODE` varchar(90) DEFAULT NULL,
-  PRIMARY KEY (`ATTACH_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='客户交互附件';
 
-/*Table structure for table `ci_channel` */
 
-DROP TABLE IF EXISTS `ci_channel`;
-
-CREATE TABLE `ci_channel` (
-  `CHANNEL_ID` bigint(8) NOT NULL COMMENT '渠道ID',
-  `CHANNEL_CODE` varchar(32) NOT NULL COMMENT '渠道代码\n            配置时要保持与UCP的渠道代码一致',
-  `CHANNEL_NAME` varchar(32) NOT NULL COMMENT '渠道名称',
-  `CHANNEL_NAME_I18N` varchar(10) DEFAULT NULL COMMENT '渠道国际化编码\n            bs_i18n_resource.res_key',
-  `CONTACT_TIMEOUT` bigint(8) NOT NULL COMMENT '接触超时时间，单位为分',
-  `EVENT_MAX_TRY_TIMES` bigint(4) NOT NULL COMMENT '事件最大发送次数，发送失败时允许发送的最大次数',
-  `EVENT_FIRE_INTERVAL` bigint(4) NOT NULL COMMENT '事件发送间隔，失败后再次发送的间隔，单位为秒',
-  `OP_ID` bigint(12) DEFAULT NULL COMMENT '受理操作员',
-  `ORG_ID` bigint(12) DEFAULT NULL COMMENT '受理组织',
-  `DONE_DATE` datetime DEFAULT NULL COMMENT '受理时间',
-  `REMARK` varchar(255) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`CHANNEL_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='主要配置交互管理自定义的渠道';
-
-/*Table structure for table `ci_channel_mapping` */
-
-DROP TABLE IF EXISTS `ci_channel_mapping`;
-
-CREATE TABLE `ci_channel_mapping` (
-  `CHNL_MAPPING_ID` bigint(12) NOT NULL COMMENT '渠道映射编码',
-  `CHANNEL_ID` bigint(8) NOT NULL COMMENT '渠道ID',
-  `SRC_SYS_ID` varchar(32) NOT NULL COMMENT '源系统标识\n            \n            CODE_TYPE=CI_SRC_SYS_ID',
-  `SRC_SYS_CHNL_ID` varchar(32) NOT NULL COMMENT '源系统渠道代码',
-  `STATE` bigint(2) NOT NULL COMMENT '状态 \n            0：无效，1：有效',
-  `OP_ID` bigint(12) DEFAULT NULL COMMENT '受理操作员',
-  `ORG_ID` bigint(12) DEFAULT NULL COMMENT '受理组织',
-  `DONE_DATE` datetime DEFAULT NULL COMMENT '受理时间',
-  `REMARK` varchar(255) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`CHNL_MAPPING_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='主要维护同一渠道，交互管理自定义渠道代码与其他业务源系统定义的渠道代码的映射关系。';
-
-/*Table structure for table `ci_contact` */
-
-DROP TABLE IF EXISTS `ci_contact`;
-
-CREATE TABLE `ci_contact` (
-  `CONTACT_ID` bigint(15) NOT NULL COMMENT '客户接触编号，编码规则：YYYYMMDD+7位序列值',
-  `CHANNEL_ID` bigint(8) NOT NULL COMMENT '渠道ID',
-  `SRC_CONTACT_ID` varchar(50) DEFAULT NULL COMMENT '源系统接触流水号',
-  `CONTACT_TIME` datetime NOT NULL COMMENT '接触时间',
-  `COMPLETE_TIME` datetime DEFAULT NULL COMMENT '接触结束时间',
-  `DURATION_INTERVAL` bigint(8) DEFAULT NULL COMMENT '持续时间间隔，单位为秒',
-  `INTERACTION_COUNT` bigint(8) DEFAULT NULL COMMENT '本次接触内的交互次数',
-  `CONTACT_TYPE` bigint(2) NOT NULL COMMENT '接触类型 1：客户主动接触 2：客户被动接触\n            \n            code_type=CI_CONTACT@CONTACT_TYPE',
-  `CUST_ID` bigint(12) NOT NULL COMMENT '客户编号',
-  `CUST_REGION_ID` varchar(10) DEFAULT NULL COMMENT '客户归属地',
-  `OP_ID` bigint(12) DEFAULT NULL COMMENT '操作员',
-  `ORG_ID` bigint(12) DEFAULT NULL COMMENT '组织编号',
-  `SRC_SYS_ID` varchar(30) NOT NULL COMMENT '业务源系统\n            CODE_TYPE=CI_SRC_SYS_ID',
-  `CONTACT_RESULT` bigint(2) DEFAULT NULL COMMENT '接触结果 0：成功，1：失败\n            code_type=CI_INTERACTION@INTERACTION_RESULT',
-  `RESULT_DETAIL` varchar(255) DEFAULT NULL COMMENT '结果明细',
-  `TENANT_ID` varchar(4) NOT NULL COMMENT '租户编号',
-  `REMARK` varchar(50) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`CONTACT_ID`),
-  KEY `IDX_CI_CONTACT_01` (`CHANNEL_ID`),
-  KEY `IDX_CI_CONTACT_02` (`CONTACT_TIME`),
-  KEY `IDX_CI_CONTACT_03` (`COMPLETE_TIME`),
-  KEY `IDX_CI_CONTACT_04` (`CONTACT_TYPE`),
-  KEY `IDX_CI_CONTACT_05` (`CUST_ID`),
-  KEY `IDX_CI_CONTACT_06` (`OP_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='客户接触信息按租户，年月，客户取模分表';
-
-/*Table structure for table `reload_log` */
-
-DROP TABLE IF EXISTS `reload_log`;
-
-CREATE TABLE `reload_log` (
-  `LOG_ID` decimal(12,0) DEFAULT NULL,
-  `SRC_TAB` varchar(255) DEFAULT NULL,
-  `SRC_INSTANCE` varchar(1024) DEFAULT NULL,
-  `DEST_TAB` varchar(255) DEFAULT NULL,
-  `MOD_COUNT` decimal(10,0) DEFAULT NULL COMMENT 'U 正常\nE 失效',
-  `DEL_COUNT` decimal(10,0) DEFAULT NULL COMMENT '记录帐户缴费后金额；如果缴费为专款专用，则记录专款专用的缴费后金额\n\n例如： 缴费后余额：100',
-  `DONE_DATE` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='RELOAD型TF跨用户同步数据，对应的LOG日志表，表所存在的用户和跨库同步数据TF所配置的用户相关';
-
-/*Table structure for table `sys_sequences` */
-
-DROP TABLE IF EXISTS `sys_sequences`;
-
-CREATE TABLE `sys_sequences` (
-  `SEQUENCE_NAME` varchar(60) NOT NULL,
-  `START_BY` bigint(20) NOT NULL COMMENT 'SEQUENCE的最开始值',
-  `INCREMENT_BY` bigint(10) NOT NULL COMMENT 'SEQUENCE的自增长度',
-  `LAST_NUMBER` bigint(20) NOT NULL COMMENT 'SEQUENCE的当前值初始化为开始值',
-  `JVM_STEP_BY` bigint(10) NOT NULL DEFAULT '200' COMMENT '缓存到JVM中的值，上线时默认为200,产品特有的自定义20',
-  PRIMARY KEY (`SEQUENCE_NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
