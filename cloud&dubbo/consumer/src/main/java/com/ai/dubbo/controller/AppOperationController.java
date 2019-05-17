@@ -20,6 +20,7 @@ import com.ai.dubbo.util.Base64Utils;
 import com.ai.dubbo.util.JsonConvertUtil;
 import com.ai.dubbo.util.SecurityKeyUtil;
 
+
 @RestController
 @RequestMapping("/")
 public class AppOperationController {
