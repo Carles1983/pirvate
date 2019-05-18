@@ -43,37 +43,49 @@ public class AgrServiceImpl implements AgrService {
 
 	@Override
 	public Long saveAgrAgreement(AgrReqDto agrReqDto) throws CrmCheckedException {
-		return agreementSV.insertAgreement(agrReqDto);
+		try {
+			AgrAgreement agreement = BeanConvertUtil.beanConversion(agrReqDto, AgrAgreement.class);
+			return agreementSV.insertAgreement(agreement);
+		} catch (IllegalAccessException | InstantiationException | InvocationTargetException  e) {
+			log.error(e.getMessage(), e);
+		}
+		return 0L;
 	}
 
 	@Override
 	public Integer updateAgreementStatusByCustomerIdAndOrderId(Long customerId, Long customerOrderId,
-														  Long agreementStatus) throws CrmCheckedException {
-		List<AgrAgreement> agreementList = agreementSV.queryAgreementByCustomerIdAndOrderId(customerId,
-				customerOrderId, AgrConstant.AGR_STATE_VALID);
-		if(!CollectionUtils.isEmpty(agreementList)){
-			return agreementSV.updateAgreementStatusBatch(agreementList, agreementStatus);
-		}
-		return 0;
+															   Long agreementStatus) throws CrmCheckedException {
+		return agreementSV.updateAgreementStatusByCustomerIdAndOrderId(customerId, customerOrderId, agreementStatus);
 	}
 
 	@Override
-	public Long signAgreement(Long agreementId) throws CrmCheckedException {
-		return agreementSV.signAgreement(agreementId);
+	public Integer signAgreement(Long agreementId) throws CrmCheckedException {
+		return agreementSV.agreementStatusChange(agreementId, AgrConstant.AGR_STATUS_SIGN);
 	}
 
 	@Override
 	public List<AgrResDto> queryAgreementByCustIdAndCustOrderId(Long custId, Long custOrderId) throws CrmCheckedException {
-		return null;
+		List<AgrAgreement> agreementList = agreementSV.queryAgreementByCustIdAndCustOrderId(custId, custOrderId,
+				AgrConstant.AGR_STATE_VALID);
+
+		try {
+			if (!CollectionUtils.isEmpty(agreementList)) {
+				List<AgrResDto> resDtoList = BeanConvertUtil.listConversion(agreementList, AgrResDto.class);
+				return resDtoList;
+			}
+		} catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+			log.error(e.getMessage(), e);
+		}
+		return Collections.emptyList();
 	}
 
 	@Override
-	public Long confirmAgreement(List<Long> customerOrderIdList, Long customerId) throws CrmCheckedException {
-		return null;
+	public Integer confirmAgreement(Long customerId, List<Long> customerOrderIdList) throws CrmCheckedException {
+		return agreementSV.updateAgreementStatusByCustomerIdListAndOrderId(customerId, customerOrderIdList, AgrConstant.AGR_STATUS_CONFIRM);
 	}
 
 	@Override
-	public Long updateAgreement(AgrReqDto agreementDto) throws CrmCheckedException {
+	public Long updateAgreement(AgrReqDto agrReqDto) throws CrmCheckedException {
 		return null;
 	}
 
