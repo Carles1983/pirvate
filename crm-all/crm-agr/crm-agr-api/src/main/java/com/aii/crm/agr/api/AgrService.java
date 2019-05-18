@@ -22,8 +22,4 @@ public interface AgrService {
 
 	Long updateAgreement(AgrDto agreementDto) throws CrmCheckedException;
 
-	Long deleteAgreement(Long agreementId) throws CrmCheckedException;
-
-	AgrDto queryAgreementByAgreementId(Long agreementId) throws CrmCheckedException;
-
 }
