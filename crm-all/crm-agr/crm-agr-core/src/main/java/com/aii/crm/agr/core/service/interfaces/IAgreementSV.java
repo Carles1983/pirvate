@@ -15,4 +15,6 @@ public interface IAgreementSV {
 
 	Integer updateAgreementStatusByCustomerIdListAndOrderId(Long customerId, List<Long> customerOrderIdList,
 															Long agrStatusConfirm);
+
+	Integer updateAgreement(AgrAgreement agreement);
 }
