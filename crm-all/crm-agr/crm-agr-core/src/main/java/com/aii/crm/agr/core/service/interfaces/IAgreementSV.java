@@ -5,11 +5,14 @@ import com.aii.crm.agr.persistence.req.AgrReqDto;
 import java.util.List;
 
 public interface IAgreementSV {
-	Long insertAgreement(AgrReqDto agrReqDto);
+	Long insertAgreement(AgrAgreement agreement);
 
-	List<AgrAgreement> queryAgreementByCustomerIdAndOrderId(Long customerId, Long customerOrderId, Long agrStateValid);
+	List<AgrAgreement> queryAgreementByCustIdAndCustOrderId(Long customerId, Long customerOrderId, Long agrStateValid);
 
-	Integer updateAgreementStatusBatch(List<AgrAgreement> agreementList, Long agreementStatus);
+	Integer agreementStatusChange(Long agreementId, Long agrStatusSign);
 
-	Long signAgreement(Long agreementId);
+	Integer updateAgreementStatusByCustomerIdAndOrderId(Long customerId, Long customerOrderId, Long agreementStatus);
+
+	Integer updateAgreementStatusByCustomerIdListAndOrderId(Long customerId, List<Long> customerOrderIdList,
+															Long agrStatusConfirm);
 }
