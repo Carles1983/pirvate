@@ -23,4 +23,14 @@ public class BeanConvertUtil {
 		return resultList;
 	}
 
+	public static <T, E> T beanConversion(E bean, Class<T> clazz) throws IllegalAccessException,
+			InstantiationException, InvocationTargetException {
+		if (bean != null) {
+			T t = clazz.newInstance();
+			BeanUtils.copyProperties(bean, t);
+			return t;
+		}
+		return null;
+	}
+
 }
