@@ -12,7 +12,7 @@ public interface AgrService {
 
 	Long saveAgrAgreement(AgrReqDto agrReqDto) throws CrmCheckedException;
 
-	Long updateAgreementStatusByCustomerIdAndOrderId(Long customerId, Long customerOrderId,
+	Integer updateAgreementStatusByCustomerIdAndOrderId(Long customerId, Long customerOrderId,
 												  Long agreementStatus) throws CrmCheckedException;
 
 	Long signAgreement(Long agreementId) throws CrmCheckedException;
