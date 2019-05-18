@@ -10,7 +10,7 @@ public interface AgrService {
 
 	List<AgrTemplateResDto> queryAgrTemplateByOfferId(Long offerId) throws CrmCheckedException;
 
-	Long saveAgrAgreement(AgrReqDto agreementDto) throws CrmCheckedException;
+	Long saveAgrAgreement(AgrReqDto agrReqDto) throws CrmCheckedException;
 
 	Long updateAgreementStatusByCustomerIdAndOrderId(Long customerId, Long customerOrderId,
 												  Long agreementStatus) throws CrmCheckedException;
