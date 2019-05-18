@@ -85,8 +85,14 @@ public class AgrServiceImpl implements AgrService {
 	}
 
 	@Override
-	public Long updateAgreement(AgrReqDto agrReqDto) throws CrmCheckedException {
-		return null;
+	public Integer updateAgreement(AgrReqDto agrReqDto) throws CrmCheckedException {
+		try {
+			AgrAgreement agreement = BeanConvertUtil.beanConversion(agrReqDto, AgrAgreement.class);
+			return agreementSV.updateAgreement(agreement);
+		} catch (IllegalAccessException | InstantiationException | InvocationTargetException  e) {
+			log.error(e.getMessage(), e);
+		}
+		return 0;
 	}
 
 }
