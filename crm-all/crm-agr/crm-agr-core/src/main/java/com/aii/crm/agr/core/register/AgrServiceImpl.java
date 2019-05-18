@@ -3,6 +3,7 @@ package com.aii.crm.agr.core.register;
 import com.aii.crm.agr.api.AgrService;
 import com.aii.crm.agr.core.persistence.bo.AgrTemplate;
 import com.aii.crm.agr.core.service.interfaces.IAgrTemplateSV;
+import com.aii.crm.agr.core.service.interfaces.IAgreementSV;
 import com.aii.crm.agr.persistence.req.AgrReqDto;
 import com.aii.crm.agr.persistence.res.AgrResDto;
 import com.aii.crm.agr.persistence.res.AgrTemplateResDto;
@@ -22,6 +23,9 @@ public class AgrServiceImpl implements AgrService {
 	@Autowired
 	private IAgrTemplateSV agrTemplateSV;
 
+	@Autowired
+	private IAgreementSV agreementSV;
+
 	@Override
 	public List<AgrTemplateResDto> queryAgrTemplateByOfferId(Long offerId) throws CrmCheckedException {
 		List<AgrTemplate> agrTemplateList = agrTemplateSV.listAgrTempalteByOfferId(offerId);
@@ -35,8 +39,8 @@ public class AgrServiceImpl implements AgrService {
 	}
 
 	@Override
-	public Long saveAgrAgreement(AgrReqDto agreementDto) throws CrmCheckedException {
-		return null;
+	public Long saveAgrAgreement(AgrReqDto agrReqDto) throws CrmCheckedException {
+		return agreementSV.insertAgreement(agrReqDto);
 	}
 
 	@Override
