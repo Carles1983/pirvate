@@ -1,6 +1,8 @@
 package com.aii.crm.agr.core.register;
 
 import com.aii.crm.agr.api.AgrService;
+import com.aii.crm.agr.core.constant.AgrConstant;
+import com.aii.crm.agr.core.persistence.bo.AgrAgreement;
 import com.aii.crm.agr.core.persistence.bo.AgrTemplate;
 import com.aii.crm.agr.core.service.interfaces.IAgrTemplateSV;
 import com.aii.crm.agr.core.service.interfaces.IAgreementSV;
@@ -15,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 
 @Service
 @Slf4j
@@ -44,8 +47,14 @@ public class AgrServiceImpl implements AgrService {
 	}
 
 	@Override
-	public Long updateAgreementStatusByCustomerIdAndOrderId(Long customerId, Long customerOrderId, Long agreementStatus) throws CrmCheckedException {
-		return null;
+	public Integer updateAgreementStatusByCustomerIdAndOrderId(Long customerId, Long customerOrderId,
+														  Long agreementStatus) throws CrmCheckedException {
+		List<AgrAgreement> agreementList = agreementSV.queryAgreementByCustomerIdAndOrderId(customerId,
+				customerOrderId, AgrConstant.AGR_STATE_VALID);
+		if(!CollectionUtils.isEmpty(agreementList)){
+			return agreementSV.updateAgreementStatusBatch(agreementList, agreementStatus);
+		}
+		return 0;
 	}
 
 	@Override
