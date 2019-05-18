@@ -50,4 +50,10 @@ public class AgreementSVImpl implements IAgreementSV {
 		map.put("agreementIdList", agreementIdList);
 		return agrAgreementMapper.updateStatusByBatchPrimaryKey(map);
 	}
+
+	@Override
+	public Long signAgreement(Long agreementId) {
+
+		return null;
+	}
 }
