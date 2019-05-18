@@ -3,6 +3,7 @@ package com.aii.crm.agr.core.persistence.mapper;
 import com.aii.crm.agr.core.persistence.bo.AgrAgreement;
 import com.aii.crm.agr.core.persistence.bo.AgrAgreementExample;
 import java.util.List;
+import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 public interface AgrAgreementMapper {
@@ -61,4 +62,6 @@ public interface AgrAgreementMapper {
      * @mbg.generated Sat May 18 10:30:26 CST 2019
      */
     int updateByExample(@Param("record") AgrAgreement record, @Param("example") AgrAgreementExample example);
+
+    int updateStatusByBatchPrimaryKey(Map<String, Object> map);
 }
