@@ -1,20 +1,21 @@
 package com.aii.crm.agr.core.register;
 
 import com.aii.crm.agr.api.AgrService;
-import com.aii.crm.agr.persistence.AgrDto;
-import com.aii.crm.agr.persistence.AgrTemplateDto;
+import com.aii.crm.agr.persistence.req.AgrReqDto;
+import com.aii.crm.agr.persistence.res.AgrResDto;
+import com.aii.crm.agr.persistence.res.AgrTemplateResDto;
 import com.aii.crm.common.exception.CrmCheckedException;
 import java.util.List;
 
 public class AgrServiceImpl implements AgrService {
 
 	@Override
-	public AgrTemplateDto queryAgrTemplateByOfferId(Long offerId) throws CrmCheckedException {
+	public AgrTemplateResDto queryAgrTemplateByOfferId(Long offerId) throws CrmCheckedException {
 		return null;
 	}
 
 	@Override
-	public Long saveAgrAgreement(AgrDto agreementDto) throws CrmCheckedException {
+	public Long saveAgrAgreement(AgrReqDto agreementDto) throws CrmCheckedException {
 		return null;
 	}
 
@@ -29,7 +30,7 @@ public class AgrServiceImpl implements AgrService {
 	}
 
 	@Override
-	public List<AgrDto> queryAgreementByCustIdAndCustOrderId(Long custId, Long custOrderId) throws CrmCheckedException {
+	public List<AgrResDto> queryAgreementByCustIdAndCustOrderId(Long custId, Long custOrderId) throws CrmCheckedException {
 		return null;
 	}
 
@@ -39,7 +40,7 @@ public class AgrServiceImpl implements AgrService {
 	}
 
 	@Override
-	public Long updateAgreement(AgrDto agreementDto) throws CrmCheckedException {
+	public Long updateAgreement(AgrReqDto agreementDto) throws CrmCheckedException {
 		return null;
 	}
 
