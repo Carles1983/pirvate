@@ -21,6 +21,6 @@ public interface AgrService {
 
 	Integer confirmAgreement(Long customerId, List<Long> customerOrderIdList) throws CrmCheckedException;
 
-	Long updateAgreement(AgrReqDto agrReqDto) throws CrmCheckedException;
+	Integer updateAgreement(AgrReqDto agrReqDto) throws CrmCheckedException;
 
 }
