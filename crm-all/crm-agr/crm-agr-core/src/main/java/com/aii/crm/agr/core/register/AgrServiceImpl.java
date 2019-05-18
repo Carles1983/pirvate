@@ -43,13 +43,4 @@ public class AgrServiceImpl implements AgrService {
 		return null;
 	}
 
-	@Override
-	public Long deleteAgreement(Long agreementId) throws CrmCheckedException {
-		return null;
-	}
-
-	@Override
-	public AgrDto queryAgreementByAgreementId(Long agreementId) throws CrmCheckedException {
-		return null;
-	}
 }
