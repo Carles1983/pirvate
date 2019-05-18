@@ -1,7 +1,8 @@
 package com.aii.crm.agr.api;
 
-import com.aii.crm.agr.persistence.AgrAttachDto;
+
+import com.aii.crm.agr.persistence.req.AgrAttachReqDto;
 
 public interface AgrAttachService {
-	Integer saveAgrAttach(AgrAttachDto agrAttachDto) throws Exception;
+	Integer saveAgrAttach(AgrAttachReqDto agrAttachReqDto) throws Exception;
 }
