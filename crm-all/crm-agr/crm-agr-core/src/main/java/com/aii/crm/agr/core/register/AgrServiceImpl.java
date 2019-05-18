@@ -59,7 +59,7 @@ public class AgrServiceImpl implements AgrService {
 
 	@Override
 	public Long signAgreement(Long agreementId) throws CrmCheckedException {
-		return null;
+		return agreementSV.signAgreement(agreementId);
 	}
 
 	@Override
