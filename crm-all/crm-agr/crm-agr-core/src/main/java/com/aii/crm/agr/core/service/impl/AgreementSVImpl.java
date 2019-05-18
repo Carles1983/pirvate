@@ -83,5 +83,8 @@ public class AgreementSVImpl implements IAgreementSV {
 		return 0;
 	}
 
-
+	@Override
+	public Integer updateAgreement(AgrAgreement agreement) {
+		return agrAgreementMapper.updateByPrimaryKeySelective(agreement);
+	}
 }
