@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface AgrService {
 
-	AgrTemplateResDto queryAgrTemplateByOfferId(Long offerId) throws CrmCheckedException;
+	List<AgrTemplateResDto> queryAgrTemplateByOfferId(Long offerId) throws CrmCheckedException;
 
 	Long saveAgrAgreement(AgrReqDto agreementDto) throws CrmCheckedException;
 
