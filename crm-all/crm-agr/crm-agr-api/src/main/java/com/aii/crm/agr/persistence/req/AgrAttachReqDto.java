@@ -1,11 +1,11 @@
-package com.aii.crm.agr.persistence;
+package com.aii.crm.agr.persistence.req;
 
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 
 @Data
-public class AgrAttachDto implements Serializable {
+public class AgrAttachReqDto implements Serializable {
 	private Long attachId;
 	private String busiTypeCode;
 	private String busiSheetId;
@@ -15,13 +15,5 @@ public class AgrAttachDto implements Serializable {
 	private String storeMediumType;
 	private String attachStatus;
 	private String remarks;
-	private Date agrCreationTime;
-	private Date createDate;
-	private Long createOpId;
-	private Long createOrgId;
-	private Long opId;
-	private Long orgId;
-	private Date doneDate;
-	private String doneCode;
 	private Long state;
 }
