@@ -10,4 +10,6 @@ public interface IAgreementSV {
 	List<AgrAgreement> queryAgreementByCustomerIdAndOrderId(Long customerId, Long customerOrderId, Long agrStateValid);
 
 	Integer updateAgreementStatusBatch(List<AgrAgreement> agreementList, Long agreementStatus);
+
+	Long signAgreement(Long agreementId);
 }
