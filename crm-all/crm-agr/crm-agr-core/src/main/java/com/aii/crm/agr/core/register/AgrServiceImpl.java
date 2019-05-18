@@ -1,16 +1,25 @@
 package com.aii.crm.agr.core.register;
 
 import com.aii.crm.agr.api.AgrService;
+import com.aii.crm.agr.core.persistence.bo.AgrTemplate;
+import com.aii.crm.agr.core.service.interfaces.IAgrTemplateSV;
 import com.aii.crm.agr.persistence.req.AgrReqDto;
 import com.aii.crm.agr.persistence.res.AgrResDto;
 import com.aii.crm.agr.persistence.res.AgrTemplateResDto;
 import com.aii.crm.common.exception.CrmCheckedException;
+import com.alibaba.dubbo.config.annotation.Service;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
+@Service
 public class AgrServiceImpl implements AgrService {
+
+	@Autowired
+	private IAgrTemplateSV agrTemplateSV;
 
 	@Override
 	public AgrTemplateResDto queryAgrTemplateByOfferId(Long offerId) throws CrmCheckedException {
+		List<AgrTemplate> agrTemplateList = agrTemplateSV.listAgrTempalteByOfferId(offerId);
 		return null;
 	}
 
