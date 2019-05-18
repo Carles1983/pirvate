@@ -15,12 +15,12 @@ public interface AgrService {
 	Integer updateAgreementStatusByCustomerIdAndOrderId(Long customerId, Long customerOrderId,
 												  Long agreementStatus) throws CrmCheckedException;
 
-	Long signAgreement(Long agreementId) throws CrmCheckedException;
+	Integer signAgreement(Long agreementId) throws CrmCheckedException;
 
 	List<AgrResDto> queryAgreementByCustIdAndCustOrderId(Long custId, Long custOrderId) throws CrmCheckedException;
 
-	Long confirmAgreement(List<Long> customerOrderIdList, Long customerId) throws CrmCheckedException;
+	Integer confirmAgreement(Long customerId, List<Long> customerOrderIdList) throws CrmCheckedException;
 
-	Long updateAgreement(AgrReqDto agreementDto) throws CrmCheckedException;
+	Long updateAgreement(AgrReqDto agrReqDto) throws CrmCheckedException;
 
 }
