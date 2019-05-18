@@ -5,7 +5,6 @@ import com.aii.crm.agr.persistence.AgrDto;
 import com.aii.crm.agr.persistence.AgrTemplateDto;
 import com.aii.crm.common.exception.CrmCheckedException;
 import java.util.List;
-import java.util.Map;
 
 public class AgrServiceImpl implements AgrService {
 
@@ -27,11 +26,6 @@ public class AgrServiceImpl implements AgrService {
 	@Override
 	public Long signAgreement(Long agreementId) throws CrmCheckedException {
 		return null;
-	}
-
-	@Override
-	public byte[] getBytesForXDoc(String docUrl, Map<String, String> params) throws CrmCheckedException {
-		return new byte[0];
 	}
 
 	@Override
