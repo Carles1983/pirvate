@@ -6,21 +6,32 @@ import com.aii.crm.agr.core.service.interfaces.IAgrTemplateSV;
 import com.aii.crm.agr.persistence.req.AgrReqDto;
 import com.aii.crm.agr.persistence.res.AgrResDto;
 import com.aii.crm.agr.persistence.res.AgrTemplateResDto;
+import com.aii.crm.common.bean.BeanConvertUtil;
 import com.aii.crm.common.exception.CrmCheckedException;
 import com.alibaba.dubbo.config.annotation.Service;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
+@Slf4j
 public class AgrServiceImpl implements AgrService {
 
 	@Autowired
 	private IAgrTemplateSV agrTemplateSV;
 
 	@Override
-	public AgrTemplateResDto queryAgrTemplateByOfferId(Long offerId) throws CrmCheckedException {
+	public List<AgrTemplateResDto> queryAgrTemplateByOfferId(Long offerId) throws CrmCheckedException {
 		List<AgrTemplate> agrTemplateList = agrTemplateSV.listAgrTempalteByOfferId(offerId);
-		return null;
+		try {
+			List<AgrTemplateResDto> resDtoList = BeanConvertUtil.listConversion(agrTemplateList, AgrTemplateResDto.class);
+			return resDtoList;
+		} catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+			log.error(e.getMessage(), e);
+		}
+		return Collections.emptyList();
 	}
 
 	@Override
