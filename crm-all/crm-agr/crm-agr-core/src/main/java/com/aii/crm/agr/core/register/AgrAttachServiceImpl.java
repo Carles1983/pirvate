@@ -15,7 +15,7 @@ public class AgrAttachServiceImpl implements AgrAttachService {
 	private IAgrAttachSV agrAttachSV;
 
 	@Override
-	public Long saveAgrAttach(AgrAttachDto agrAttachDto) throws Exception {
+	public Integer saveAgrAttach(AgrAttachDto agrAttachDto) throws Exception {
 		AgrAttach attach = new AgrAttach();
 		BeanUtils.copyProperties(agrAttachDto, attach);
 		return agrAttachSV.insertAgrAttach(attach);
