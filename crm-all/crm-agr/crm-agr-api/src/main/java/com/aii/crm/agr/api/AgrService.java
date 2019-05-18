@@ -4,7 +4,6 @@ import com.aii.crm.agr.persistence.AgrDto;
 import com.aii.crm.agr.persistence.AgrTemplateDto;
 import com.aii.crm.common.exception.CrmCheckedException;
 import java.util.List;
-import java.util.Map;
 
 public interface AgrService {
 
@@ -16,8 +15,6 @@ public interface AgrService {
 												  Long agreementStatus) throws CrmCheckedException;
 
 	Long signAgreement(Long agreementId) throws CrmCheckedException;
-
-	byte[] getBytesForXDoc(String docUrl, Map<String, String> params) throws CrmCheckedException;
 
 	List<AgrDto> queryAgreementByCustIdAndCustOrderId(Long custId, Long custOrderId) throws CrmCheckedException;
 
