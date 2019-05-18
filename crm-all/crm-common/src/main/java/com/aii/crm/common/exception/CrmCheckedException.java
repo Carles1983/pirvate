@@ -14,6 +14,14 @@ public class CrmCheckedException extends Exception {
 	private Object[] args;
 	private Map<String, Object> i18n;
 
+	public CrmCheckedException(String message, Throwable cause) {
+		super(message, cause);
+		this.key = key;
+		this.args = args;
+		this.errorCode = errorCode;
+		this.errorMessage = errorMessage;
+	}
+
 	public CrmCheckedException(String errorCode, String errorMessage, String key, Object args[], Throwable cause) {
 		super(wrapperMessage(key, args), cause);
 		this.key = key;
