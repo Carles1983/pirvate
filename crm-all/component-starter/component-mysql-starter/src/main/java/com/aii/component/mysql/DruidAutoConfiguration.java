@@ -1,5 +1,6 @@
 package com.aii.component.mysql;
 
+import com.aii.component.mysql.properties.DruidProperties;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
