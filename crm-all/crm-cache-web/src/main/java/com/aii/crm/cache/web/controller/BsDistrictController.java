@@ -2,6 +2,7 @@ package com.aii.crm.cache.web.controller;
 
 import com.aii.crm.cache.web.service.interfaces.IBsDistrictSV;
 import com.aii.crm.common.cache.model.District;
+import com.aii.crm.common.page.PageResult;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,7 @@ public class BsDistrictController {
 	}
 
 	@RequestMapping(value = "/districts", method = RequestMethod.GET)
-	public Page<District> retrieveBsDistrict(@RequestParam Integer pageNo, @RequestParam Integer pageSize){
+	public PageResult<District> retrieveBsDistrict(@RequestParam Integer pageNo, @RequestParam Integer pageSize){
 		return districtSV.listDistrictPages(pageNo, pageSize);
 	}
 
