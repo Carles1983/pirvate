@@ -112,9 +112,9 @@ public class BsFtpPathSVImpl implements IBsFtpPathSV {
 	private void modifyRedisFtpPath(FtpPath ftpPath, String ftpPathCode, int modifyType) {
 		HashOperations<String, String, Object> hashOp = redisTemplate.opsForHash();
 		if (CacheWebConstant.MODIFY_TYPE_ADD == modifyType || CacheWebConstant.MODIFY_TYPE_UPDATE == modifyType) {
-			hashOp.put(CacheConstant.FTP_REDIS_KEY, ftpPath.getFtpPathCode(), ftpPath);
+			hashOp.put(CacheConstant.FTP_PATH_REDIS_KEY, ftpPath.getFtpPathCode(), ftpPath);
 		} else if (CacheWebConstant.MODIFY_TYPE_DELETE == modifyType) {
-			hashOp.delete(CacheConstant.FTP_REDIS_KEY, ftpPathCode);
+			hashOp.delete(CacheConstant.FTP_PATH_REDIS_KEY, ftpPathCode);
 		} else {
 			log.info("not implemented.");
 		}
