@@ -5,6 +5,7 @@ import com.aii.crm.cache.web.service.interfaces.IBsFtpPathSV;
 import com.aii.crm.cache.web.service.interfaces.IBsFtpSV;
 import com.aii.crm.cache.web.service.interfaces.IBsI18nResourceSV;
 import com.aii.crm.cache.web.service.interfaces.IBsParaDetailSV;
+import com.aii.crm.cache.web.service.interfaces.IBsStaticDataSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +30,9 @@ public class CacheController {
 	@Autowired
 	private IBsParaDetailSV paraDetailSV;
 
+	@Autowired
+	private IBsStaticDataSV staticDataSV;
+
 	@RequestMapping(value = "/district/redis", method = RequestMethod.PUT)
 	public Integer loadBsDistrictToRedis(){
 		return districtSV.loadDistrict();
@@ -52,6 +56,11 @@ public class CacheController {
 	@RequestMapping(value = "/paraDetail/redis", method = RequestMethod.PUT)
 	public Integer loadBsParaDetailToRedis(){
 		return paraDetailSV.loadBsParaDetail();
+	}
+
+	@RequestMapping(value = "/staticData/redis", method = RequestMethod.PUT)
+	public Integer loadBsStaticDataToRedis(){
+		return staticDataSV.loadBsStaticData();
 	}
 
 }
