@@ -86,6 +86,8 @@ public class BsFtpSVImpl implements IBsFtpSV {
 	@Override
 	public Integer loadFtp() {
 		BsFtpExample example = new BsFtpExample();
+		BsFtpExample.Criteria criteria = example.createCriteria();
+		criteria.andStateEqualTo(CacheWebConstant.STATE_IN_USE);
 		List<BsFtp> bsFtpList = ftpMapper.selectByExample(example);
 		try {
 			List<Ftp> ftpList = BeanConvertUtil.listConversion(bsFtpList, Ftp.class);
