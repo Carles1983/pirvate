@@ -2,12 +2,17 @@ package com.aii.crm.cache.web.service.impl;
 
 import com.aii.crm.cache.web.constant.CacheWebConstant;
 import com.aii.crm.cache.web.persistence.bo.BsFtp;
+import com.aii.crm.cache.web.persistence.bo.BsFtpExample;
 import com.aii.crm.cache.web.persistence.bo.BsParaDetail;
+import com.aii.crm.cache.web.persistence.bo.BsParaDetailExample;
 import com.aii.crm.cache.web.persistence.mapper.BsParaDetailMapper;
 import com.aii.crm.cache.web.service.interfaces.IBsParaDetailSV;
 import com.aii.crm.common.bean.BeanConvertUtil;
+import com.aii.crm.common.cache.model.Ftp;
 import com.aii.crm.common.cache.model.ParaDetail;
 import com.aii.crm.common.page.PageResult;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import java.lang.reflect.InvocationTargetException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +46,16 @@ public class BsParaDetailSVImpl implements IBsParaDetailSV {
 
 	@Override
 	public PageResult<ParaDetail> listBsParaDetailPages(Integer pageNo, Integer pageSize) {
-		return null;
+		Page<BsParaDetail> page = PageHelper.startPage(pageNo, pageSize, true);
+		BsParaDetailExample example = new BsParaDetailExample();
+		paraDetailMapper.selectByExample(example);
+		try {
+			PageResult<ParaDetail> result = BeanConvertUtil.pageConversion(page, ParaDetail.class);
+			return result;
+		} catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+			log.info("error");
+		}
+		return new PageResult<>();
 	}
 
 	@Override
