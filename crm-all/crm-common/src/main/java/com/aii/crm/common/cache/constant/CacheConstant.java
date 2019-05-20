@@ -9,5 +9,6 @@ public class CacheConstant {
 	public static final String FTP_PATH_REDIS_KEY = "cache_ftp_path";
 	public static final String I18N_RESOURCE_REDIS_KEY = "cache_i18n_resource";
 	public static final String PARA_DETAIL_REDIS_KEY = "cache_para_detail";
+	public static final String STATIC_DATA_REDIS_KEY = "cache_static_data";
 
 }
