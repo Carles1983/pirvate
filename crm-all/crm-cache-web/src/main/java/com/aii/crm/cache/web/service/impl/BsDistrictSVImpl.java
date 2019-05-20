@@ -1,5 +1,6 @@
 package com.aii.crm.cache.web.service.impl;
 
+import com.aii.crm.cache.web.constant.CacheWebConstant;
 import com.aii.crm.cache.web.persistence.bo.BsDistrict;
 import com.aii.crm.cache.web.persistence.bo.BsDistrictExample;
 import com.aii.crm.cache.web.persistence.mapper.BsDistrictMapper;
@@ -8,6 +9,7 @@ import com.aii.crm.common.bean.BeanConvertUtil;
 import com.aii.crm.common.cache.constant.CacheConstant;
 import com.aii.crm.common.cache.model.District;
 import com.aii.crm.common.map.MapUtil;
+import com.aii.crm.common.page.PageResult;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import java.lang.reflect.InvocationTargetException;
@@ -31,19 +33,12 @@ public class BsDistrictSVImpl implements IBsDistrictSV {
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
 
-	// 新增
-	private static final int MODIFY_TYPE_ADD = 0;
-	// 修改
-	private static final int MODIFY_TYPE_UPDATE = 1;
-	// 删除
-	private static final int MODIFY_TYPE_DELETE = 2;
-
 	@Override
 	public Integer saveDistrict(District addDto) {
 		try {
 			BsDistrict district = BeanConvertUtil.beanConversion(addDto, BsDistrict.class);
 			Integer result = districtMapper.insertSelective(district);
-			modifyRedisDistrict(district, district.getDistrictId(), MODIFY_TYPE_ADD);
+			modifyRedisDistrict(addDto, addDto.getDistrictId(), CacheWebConstant.MODIFY_TYPE_ADD);
 			return result;
 		} catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
 			log.info("error");
@@ -52,11 +47,17 @@ public class BsDistrictSVImpl implements IBsDistrictSV {
 	}
 
 	@Override
-	public Page<District> listDistrictPages(Integer pageNo, Integer pageSize) {
-		Page<District> page = PageHelper.startPage(pageNo, pageSize, true);
+	public PageResult<District> listDistrictPages(Integer pageNo, Integer pageSize) {
+		Page<BsDistrict> page = PageHelper.startPage(pageNo, pageSize, true);
 		BsDistrictExample example = new BsDistrictExample();
 		districtMapper.selectByExample(example);
-		return page;
+		try {
+			PageResult<District> result = BeanConvertUtil.pageConversion(page, District.class);
+			return result;
+		} catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+			log.info("error");
+		}
+		return new PageResult<>();
 	}
 
 	@Override
@@ -64,7 +65,7 @@ public class BsDistrictSVImpl implements IBsDistrictSV {
 		try {
 			BsDistrict district = BeanConvertUtil.beanConversion(updateDto, BsDistrict.class);
 			Integer result = districtMapper.updateByPrimaryKeySelective(district);
-			modifyRedisDistrict(district, district.getDistrictId(), MODIFY_TYPE_UPDATE);
+			modifyRedisDistrict(updateDto, updateDto.getDistrictId(), CacheWebConstant.MODIFY_TYPE_UPDATE);
 			return result;
 		} catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
 			log.info("error");
@@ -75,7 +76,7 @@ public class BsDistrictSVImpl implements IBsDistrictSV {
 	@Override
 	public Integer deleteDistrict(Long districtId) {
 		Integer result = districtMapper.deleteByPrimaryKey(districtId);
-		modifyRedisDistrict(null, districtId, MODIFY_TYPE_DELETE);
+		modifyRedisDistrict(null, districtId, CacheWebConstant.MODIFY_TYPE_DELETE);
 		return result;
 	}
 
@@ -87,7 +88,7 @@ public class BsDistrictSVImpl implements IBsDistrictSV {
 			List<District> districtList = BeanConvertUtil.listConversion(bsDistrictList, District.class);
 			if (!CollectionUtils.isEmpty(districtList)) {
 				Map<Long, Object> map = new HashMap<>();
-				for(District dt : districtList){
+				for (District dt : districtList) {
 					map.put(dt.getDistrictId(), dt);
 				}
 				HashOperations<String, Long, Object> hashOp = redisTemplate.opsForHash();
@@ -103,19 +104,14 @@ public class BsDistrictSVImpl implements IBsDistrictSV {
 		return 0;
 	}
 
-	private void modifyRedisDistrict(BsDistrict bsDistrict, Long districtId, int modifyType) {
-		try {
-			District district = BeanConvertUtil.beanConversion(bsDistrict, District.class);
-			HashOperations<String, Long, Object> hashOp = redisTemplate.opsForHash();
-			if(MODIFY_TYPE_ADD == modifyType || MODIFY_TYPE_UPDATE == modifyType){
-				hashOp.put(CacheConstant.DISTRICT_REDIS_KEY, district.getDistrictId(), district);
-			} else if (MODIFY_TYPE_DELETE == modifyType){
-				hashOp.delete(CacheConstant.DISTRICT_REDIS_KEY, districtId);
-			} else {
-				log.info("not implemented.");
-			}
-		} catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
-			log.info("error");
+	private void modifyRedisDistrict(District district, Long districtId, int modifyType) {
+		HashOperations<String, Long, Object> hashOp = redisTemplate.opsForHash();
+		if (CacheWebConstant.MODIFY_TYPE_ADD == modifyType || CacheWebConstant.MODIFY_TYPE_UPDATE == modifyType) {
+			hashOp.put(CacheConstant.DISTRICT_REDIS_KEY, district.getDistrictId(), district);
+		} else if (CacheWebConstant.MODIFY_TYPE_DELETE == modifyType) {
+			hashOp.delete(CacheConstant.DISTRICT_REDIS_KEY, districtId);
+		} else {
+			log.info("not implemented.");
 		}
 	}
 
