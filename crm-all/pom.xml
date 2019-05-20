@@ -10,6 +10,7 @@
     <modules>
         <module>crm-agr</module>
         <module>crm-common</module>
+        <module>crm-cache-web</module>
     </modules>
 
     <packaging>pom</packaging>
