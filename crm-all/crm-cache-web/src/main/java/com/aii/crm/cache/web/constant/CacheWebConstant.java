@@ -11,4 +11,7 @@ public class CacheWebConstant {
 	// 删除
 	public static final int MODIFY_TYPE_DELETE = 2;
 
+	public static final String STATE_IN_USE = "U";
+	public static final String STATE_OUT_OF_USE = "E";
+
 }
