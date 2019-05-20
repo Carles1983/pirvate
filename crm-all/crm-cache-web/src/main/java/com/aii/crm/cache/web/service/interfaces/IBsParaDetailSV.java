@@ -7,6 +7,6 @@ public interface IBsParaDetailSV {
 	Integer saveBsParaDetail(ParaDetail addDto);
 	PageResult<ParaDetail> listBsParaDetailPages(Integer pageNo, Integer pageSize);
 	Integer updateBsParaDetail(ParaDetail updateDto);
-	Integer deleteBsParaDetail(String ftpCode);
+	Integer deleteBsParaDetail(String regionId, String paraType, String paraCode);
 	Integer loadBsParaDetail();
 }
