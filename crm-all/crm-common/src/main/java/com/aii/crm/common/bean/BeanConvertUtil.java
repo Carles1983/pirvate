@@ -1,5 +1,7 @@
 package com.aii.crm.common.bean;
 
+import com.aii.crm.common.page.PageResult;
+import com.github.pagehelper.Page;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,18 @@ public class BeanConvertUtil {
 			return t;
 		}
 		return null;
+	}
+
+	public static <T, E> PageResult<T> pageConversion(Page<E> page, Class<T> clazz) throws IllegalAccessException,
+			InstantiationException, InvocationTargetException {
+		PageResult<T> pageResult = new PageResult<>();
+		pageResult.setPageNum(page.getPageNum());
+		pageResult.setPageSize(page.getPageSize());
+		pageResult.setPages(page.getPages());
+		pageResult.setTotal(page.getTotal());
+		List<T> result = listConversion(page.getResult(), clazz);
+		pageResult.setResultList(result);
+		return pageResult;
 	}
 
 }
