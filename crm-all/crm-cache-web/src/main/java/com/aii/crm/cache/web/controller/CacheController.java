@@ -1,6 +1,7 @@
 package com.aii.crm.cache.web.controller;
 
 import com.aii.crm.cache.web.service.interfaces.IBsDistrictSV;
+import com.aii.crm.cache.web.service.interfaces.IBsFtpPathSV;
 import com.aii.crm.cache.web.service.interfaces.IBsFtpSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,9 @@ public class CacheController {
 	@Autowired
 	private IBsFtpSV ftpSV;
 
+	@Autowired
+	private IBsFtpPathSV ftpPathSV;
+
 	@RequestMapping(value = "/district/redis", method = RequestMethod.PUT)
 	public Integer loadBsDistrictToRedis(){
 		return districtSV.loadDistrict();
@@ -25,6 +29,11 @@ public class CacheController {
 	@RequestMapping(value = "/ftp/redis", method = RequestMethod.PUT)
 	public Integer loadBsFtpToRedis(){
 		return ftpSV.loadFtp();
+	}
+
+	@RequestMapping(value = "/ftpPath/redis", method = RequestMethod.PUT)
+	public Integer loadBsFtpPathToRedis(){
+		return ftpPathSV.loadFtpPath();
 	}
 
 }
