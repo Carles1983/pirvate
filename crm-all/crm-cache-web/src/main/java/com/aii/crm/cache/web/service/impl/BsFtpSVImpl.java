@@ -36,6 +36,7 @@ public class BsFtpSVImpl implements IBsFtpSV {
 	@Override
 	public Integer saveFtp(Ftp addDto) {
 		try {
+			addDto.setState(CacheWebConstant.STATE_IN_USE);
 			BsFtp bsFtp = BeanConvertUtil.beanConversion(addDto, BsFtp.class);
 			Integer result = ftpMapper.insertSelective(bsFtp);
 			modifyRedisFtp(addDto, bsFtp.getFtpCode(), CacheWebConstant.MODIFY_TYPE_ADD);
@@ -75,7 +76,9 @@ public class BsFtpSVImpl implements IBsFtpSV {
 
 	@Override
 	public Integer deleteFtp(String ftpCode) {
-		Integer result = ftpMapper.deleteByPrimaryKey(ftpCode);
+		BsFtp bsFtp = ftpMapper.selectByPrimaryKey(ftpCode);
+		bsFtp.setState(CacheWebConstant.STATE_OUT_OF_USE);
+		Integer result = ftpMapper.updateByPrimaryKeySelective(bsFtp);
 		modifyRedisFtp(null, ftpCode, CacheWebConstant.MODIFY_TYPE_DELETE);
 		return result;
 	}
