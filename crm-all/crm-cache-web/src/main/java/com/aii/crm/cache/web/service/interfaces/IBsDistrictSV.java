@@ -1,14 +1,14 @@
 package com.aii.crm.cache.web.service.interfaces;
 
-import com.aii.crm.cache.web.model.BsDistrictDto;
+import com.aii.crm.common.cache.model.District;
 import com.github.pagehelper.Page;
 
 public interface IBsDistrictSV {
-	Integer saveDistrict(BsDistrictDto addDto);
+	Integer saveDistrict(District addDto);
 
-	Page<BsDistrictDto> listDistrictPages(Integer pageNo, Integer pageSize);
+	Page<District> listDistrictPages(Integer pageNo, Integer pageSize);
 
-	Integer updateDistrict(BsDistrictDto updateDto);
+	Integer updateDistrict(District updateDto);
 
 	Integer deleteDistrict(Long districtId);
 
