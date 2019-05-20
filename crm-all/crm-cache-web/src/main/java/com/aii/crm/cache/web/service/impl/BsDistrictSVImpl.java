@@ -1,6 +1,5 @@
 package com.aii.crm.cache.web.service.impl;
 
-import com.aii.crm.cache.web.model.BsDistrictDto;
 import com.aii.crm.cache.web.persistence.bo.BsDistrict;
 import com.aii.crm.cache.web.persistence.bo.BsDistrictExample;
 import com.aii.crm.cache.web.persistence.mapper.BsDistrictMapper;
@@ -40,7 +39,7 @@ public class BsDistrictSVImpl implements IBsDistrictSV {
 	private static final int MODIFY_TYPE_DELETE = 2;
 
 	@Override
-	public Integer saveDistrict(BsDistrictDto addDto) {
+	public Integer saveDistrict(District addDto) {
 		try {
 			BsDistrict district = BeanConvertUtil.beanConversion(addDto, BsDistrict.class);
 			Integer result = districtMapper.insertSelective(district);
@@ -53,15 +52,15 @@ public class BsDistrictSVImpl implements IBsDistrictSV {
 	}
 
 	@Override
-	public Page<BsDistrictDto> listDistrictPages(Integer pageNo, Integer pageSize) {
-		Page<BsDistrictDto> page = PageHelper.startPage(pageNo, pageSize, true);
+	public Page<District> listDistrictPages(Integer pageNo, Integer pageSize) {
+		Page<District> page = PageHelper.startPage(pageNo, pageSize, true);
 		BsDistrictExample example = new BsDistrictExample();
 		districtMapper.selectByExample(example);
 		return page;
 	}
 
 	@Override
-	public Integer updateDistrict(BsDistrictDto updateDto) {
+	public Integer updateDistrict(District updateDto) {
 		try {
 			BsDistrict district = BeanConvertUtil.beanConversion(updateDto, BsDistrict.class);
 			Integer result = districtMapper.updateByPrimaryKeySelective(district);
