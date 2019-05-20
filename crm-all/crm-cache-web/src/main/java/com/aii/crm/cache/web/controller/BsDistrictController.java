@@ -1,7 +1,7 @@
 package com.aii.crm.cache.web.controller;
 
-import com.aii.crm.cache.web.model.BsDistrictDto;
 import com.aii.crm.cache.web.service.interfaces.IBsDistrictSV;
+import com.aii.crm.common.cache.model.District;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,17 +18,17 @@ public class BsDistrictController {
 	private IBsDistrictSV districtSV;
 
 	@RequestMapping(value = "/district", method = RequestMethod.POST)
-	public Integer createBsDistrict(@RequestBody BsDistrictDto addDto){
+	public Integer createBsDistrict(@RequestBody District addDto){
 		return districtSV.saveDistrict(addDto);
 	}
 
 	@RequestMapping(value = "/districts", method = RequestMethod.GET)
-	public Page<BsDistrictDto> retrieveBsDistrict(@RequestParam Integer pageNo, @RequestParam Integer pageSize){
+	public Page<District> retrieveBsDistrict(@RequestParam Integer pageNo, @RequestParam Integer pageSize){
 		return districtSV.listDistrictPages(pageNo, pageSize);
 	}
 
 	@RequestMapping(value = "/district", method = RequestMethod.PUT)
-	public Integer updateBsDistrict(@RequestBody BsDistrictDto updateDto){
+	public Integer updateBsDistrict(@RequestBody District updateDto){
 		return districtSV.updateDistrict(updateDto);
 	}
 
