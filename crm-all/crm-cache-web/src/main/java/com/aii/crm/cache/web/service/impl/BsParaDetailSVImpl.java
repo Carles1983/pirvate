@@ -119,10 +119,10 @@ public class BsParaDetailSVImpl implements IBsParaDetailSV {
 	private void modifyRedisParaDetail(ParaDetail addDto, String regionId, String paraType, String paraCode, int modifyType) {
 		HashOperations<String, String, Object> hashOp = redisTemplate.opsForHash();
 		if (CacheWebConstant.MODIFY_TYPE_ADD == modifyType || CacheWebConstant.MODIFY_TYPE_UPDATE == modifyType) {
-			hashOp.put(CacheConstant.FTP_REDIS_KEY,
+			hashOp.put(CacheConstant.PARA_DETAIL_REDIS_KEY,
 					addDto.getRegionId()+"_"+addDto.getParaType()+"_"+addDto.getParaCode(), addDto);
 		} else if (CacheWebConstant.MODIFY_TYPE_DELETE == modifyType) {
-			hashOp.delete(CacheConstant.FTP_REDIS_KEY, regionId+"_"+paraType+"_"+paraCode);
+			hashOp.delete(CacheConstant.PARA_DETAIL_REDIS_KEY, regionId+"_"+paraType+"_"+paraCode);
 		} else {
 			log.info("not implemented.");
 		}
