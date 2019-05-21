@@ -7,6 +7,6 @@ public interface ICfgHttpSV {
 	Integer saveHttp(Http addDto);
 	PageResult<Http> listHttpPages(Integer pageNo, Integer pageSize);
 	Integer updateHttp(Http updateDto);
-	Integer deleteHttp(String ftpCode);
+	Integer deleteHttp(String cfgHttpCode);
 	Integer loadHttp();
 }
