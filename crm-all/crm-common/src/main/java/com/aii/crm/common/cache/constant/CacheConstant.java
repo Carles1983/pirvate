@@ -14,5 +14,6 @@ public class CacheConstant {
 	public static final String CLIENT_TIMEOUT_REDIS_KEY = "cache_client_timeout";
 	public static final String HTTP_CLIENT_REDIS_KEY = "cache_http_client";
 	public static final String HTTP_REDIS_KEY = "cache_http";
+	public static final String HTTP_MAPPING_REDIS_KEY = "cache_http_mapping";
 
 }
