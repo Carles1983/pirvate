@@ -1,6 +1,6 @@
 package com.aii.crm.cache.web.controller;
 
-import com.aii.crm.cache.web.service.interfaces.IConfigClientTimeoutSV;
+import com.aii.crm.cache.web.service.interfaces.ICfgClientTimeoutSV;
 import com.aii.crm.common.cache.model.ClientTimeout;
 import com.aii.crm.common.page.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CfgClientTimeoutController {
 
 	@Autowired
-	private IConfigClientTimeoutSV clientTimeoutSV;
+	private ICfgClientTimeoutSV clientTimeoutSV;
 
 	@RequestMapping(value = "/clientTimeout", method = RequestMethod.POST)
 	public Integer createCfgClientTimeout(@RequestBody ClientTimeout addDto){
