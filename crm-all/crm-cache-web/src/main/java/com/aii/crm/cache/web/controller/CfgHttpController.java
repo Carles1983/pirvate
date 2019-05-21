@@ -17,22 +17,22 @@ public class CfgHttpController {
 	@Autowired
 	private ICfgHttpSV httpSV;
 
-	@RequestMapping(value = "/ftp", method = RequestMethod.POST)
+	@RequestMapping(value = "/http", method = RequestMethod.POST)
 	public Integer createCfgHttp(@RequestBody Http addDto){
 		return httpSV.saveHttp(addDto);
 	}
 
-	@RequestMapping(value = "/ftps", method = RequestMethod.GET)
+	@RequestMapping(value = "/https", method = RequestMethod.GET)
 	public PageResult<Http> retrieveCfgHttp(@RequestParam Integer pageNo, @RequestParam Integer pageSize){
 		return httpSV.listHttpPages(pageNo, pageSize);
 	}
 
-	@RequestMapping(value = "/ftp", method = RequestMethod.PUT)
+	@RequestMapping(value = "/http", method = RequestMethod.PUT)
 	public Integer updateCfgHttp(@RequestBody Http updateDto){
 		return httpSV.updateHttp(updateDto);
 	}
 
-	@RequestMapping(value = "/ftp", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/http", method = RequestMethod.DELETE)
 	public Integer deleteCfgHttp(@RequestParam String cfgHttpCode){
 		return httpSV.deleteHttp(cfgHttpCode);
 	}
