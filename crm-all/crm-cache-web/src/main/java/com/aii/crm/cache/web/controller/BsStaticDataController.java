@@ -16,22 +16,22 @@ public class BsStaticDataController {
 	@Autowired
 	private IBsStaticDataSV staticDataSV;
 
-	@RequestMapping(value = "/paraDetail", method = RequestMethod.POST)
+	@RequestMapping(value = "/staticData", method = RequestMethod.POST)
 	public Integer createBsStaticData(@RequestBody StaticData addDto){
 		return staticDataSV.saveStaticData(addDto);
 	}
 
-	@RequestMapping(value = "/ftpPaths", method = RequestMethod.GET)
+	@RequestMapping(value = "/staticDatas", method = RequestMethod.GET)
 	public PageResult<StaticData> retrieveBsStaticData(@RequestParam Integer pageNo, @RequestParam Integer pageSize){
 		return staticDataSV.listStaticDataPages(pageNo, pageSize);
 	}
 
-	@RequestMapping(value = "/ftpPath", method = RequestMethod.PUT)
+	@RequestMapping(value = "/staticData", method = RequestMethod.PUT)
 	public Integer updateBsStaticData(@RequestBody StaticData updateDto){
 		return staticDataSV.updateStaticData(updateDto);
 	}
 
-	@RequestMapping(value = "/ftpPath", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/staticData", method = RequestMethod.DELETE)
 	public Integer deleteBsStaticData(@RequestParam String codeType,
 									  @RequestParam String codeValue){
 		return staticDataSV.deleteStaticData(codeType, codeValue);
