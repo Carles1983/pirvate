@@ -18,22 +18,22 @@ public class BsStaticDataController {
 
 	@RequestMapping(value = "/paraDetail", method = RequestMethod.POST)
 	public Integer createBsStaticData(@RequestBody StaticData addDto){
-		return staticDataSV.saveBsStaticData(addDto);
+		return staticDataSV.saveStaticData(addDto);
 	}
 
 	@RequestMapping(value = "/ftpPaths", method = RequestMethod.GET)
 	public PageResult<StaticData> retrieveBsStaticData(@RequestParam Integer pageNo, @RequestParam Integer pageSize){
-		return staticDataSV.listBsStaticDataPages(pageNo, pageSize);
+		return staticDataSV.listStaticDataPages(pageNo, pageSize);
 	}
 
 	@RequestMapping(value = "/ftpPath", method = RequestMethod.PUT)
 	public Integer updateBsStaticData(@RequestBody StaticData updateDto){
-		return staticDataSV.updateBsStaticData(updateDto);
+		return staticDataSV.updateStaticData(updateDto);
 	}
 
 	@RequestMapping(value = "/ftpPath", method = RequestMethod.DELETE)
 	public Integer deleteBsStaticData(@RequestParam String codeType,
 									  @RequestParam String codeValue){
-		return staticDataSV.deleteBsStaticData(codeType, codeValue);
+		return staticDataSV.deleteStaticData(codeType, codeValue);
 	}
 }
