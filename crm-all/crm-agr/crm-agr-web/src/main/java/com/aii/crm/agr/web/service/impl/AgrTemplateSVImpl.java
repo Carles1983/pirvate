@@ -1,9 +1,9 @@
 package com.aii.crm.agr.web.service.impl;
 
-import com.aii.crm.agr.core.persistence.bo.AgrTemplate;
-import com.aii.crm.agr.core.persistence.bo.AgrTemplateExample;
-import com.aii.crm.agr.core.persistence.mapper.AgrTemplateMapper;
-import com.aii.crm.agr.core.service.interfaces.IAgrTemplateSV;
+import com.aii.crm.agr.web.persistence.bo.AgrTemplate;
+import com.aii.crm.agr.web.persistence.bo.AgrTemplateExample;
+import com.aii.crm.agr.web.persistence.mapper.AgrTemplateMapper;
+import com.aii.crm.agr.web.service.interfaces.IAgrTemplateSV;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

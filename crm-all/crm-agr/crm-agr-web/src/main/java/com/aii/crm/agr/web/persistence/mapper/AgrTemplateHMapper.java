@@ -1,7 +1,7 @@
 package com.aii.crm.agr.web.persistence.mapper;
 
-import com.aii.crm.agr.core.persistence.bo.AgrTemplateH;
-import com.aii.crm.agr.core.persistence.bo.AgrTemplateHExample;
+import com.aii.crm.agr.web.persistence.bo.AgrTemplateH;
+import com.aii.crm.agr.web.persistence.bo.AgrTemplateHExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

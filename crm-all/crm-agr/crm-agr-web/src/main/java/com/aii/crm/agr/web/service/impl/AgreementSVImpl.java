@@ -22,6 +22,7 @@ public class AgreementSVImpl implements IAgreementSV {
 
 	@Override
 	public Long insertAgreement(AgrAgreement agreement) {
+
 		agrAgreementMapper.insertSelective(agreement);
 		return agreement.getAgreementId();
 	}
