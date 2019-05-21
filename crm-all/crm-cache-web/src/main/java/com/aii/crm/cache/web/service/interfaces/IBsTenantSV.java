@@ -7,6 +7,6 @@ public interface IBsTenantSV {
 	Integer saveTenant(Tenant addDto);
 	PageResult<Tenant> listTenantPages(Integer pageNo, Integer pageSize);
 	Integer updateTenant(Tenant updateDto);
-	Integer deleteTenant(String ftpCode);
+	Integer deleteTenant(String tenantId);
 	Integer loadTenant();
 }
