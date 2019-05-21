@@ -17,22 +17,22 @@ public class BsTenantController {
 	@Autowired
 	private IBsTenantSV tenantSV;
 
-	@RequestMapping(value = "/paraDetail", method = RequestMethod.POST)
+	@RequestMapping(value = "/tenant", method = RequestMethod.POST)
 	public Integer createBsTenant(@RequestBody Tenant addDto){
 		return tenantSV.saveTenant(addDto);
 	}
 
-	@RequestMapping(value = "/ftpPaths", method = RequestMethod.GET)
+	@RequestMapping(value = "/tenants", method = RequestMethod.GET)
 	public PageResult<Tenant> retrieveBsTenant(@RequestParam Integer pageNo, @RequestParam Integer pageSize){
 		return tenantSV.listTenantPages(pageNo, pageSize);
 	}
 
-	@RequestMapping(value = "/ftpPath", method = RequestMethod.PUT)
+	@RequestMapping(value = "/tenant", method = RequestMethod.PUT)
 	public Integer updateBsTenant(@RequestBody Tenant updateDto){
 		return tenantSV.updateTenant(updateDto);
 	}
 
-	@RequestMapping(value = "/ftpPath", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/tenant", method = RequestMethod.DELETE)
 	public Integer deleteBsTenant(@RequestParam String tenantId){
 		return tenantSV.deleteTenant(tenantId);
 	}
