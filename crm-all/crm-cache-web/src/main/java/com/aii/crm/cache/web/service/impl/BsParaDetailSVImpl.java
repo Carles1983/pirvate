@@ -35,7 +35,7 @@ public class BsParaDetailSVImpl implements IBsParaDetailSV {
 	private RedisTemplate<String, Object> redisTemplate;
 
 	@Override
-	public Integer saveBsParaDetail(ParaDetail addDto) {
+	public Integer saveParaDetail(ParaDetail addDto) {
 		try {
 			addDto.setState(CacheWebConstant.STATE_IN_USE);
 			BsParaDetail bsParaDetail = BeanConvertUtil.beanConversion(addDto, BsParaDetail.class);
@@ -50,7 +50,7 @@ public class BsParaDetailSVImpl implements IBsParaDetailSV {
 	}
 
 	@Override
-	public PageResult<ParaDetail> listBsParaDetailPages(Integer pageNo, Integer pageSize) {
+	public PageResult<ParaDetail> listParaDetailPages(Integer pageNo, Integer pageSize) {
 		Page<BsParaDetail> page = PageHelper.startPage(pageNo, pageSize, true);
 		BsParaDetailExample example = new BsParaDetailExample();
 		paraDetailMapper.selectByExample(example);
@@ -64,7 +64,7 @@ public class BsParaDetailSVImpl implements IBsParaDetailSV {
 	}
 
 	@Override
-	public Integer updateBsParaDetail(ParaDetail updateDto) {
+	public Integer updateParaDetail(ParaDetail updateDto) {
 		try {
 			BsParaDetail bsParaDetail = BeanConvertUtil.beanConversion(updateDto, BsParaDetail.class);
 			Integer result = paraDetailMapper.updateByPrimaryKeySelective(bsParaDetail);
@@ -78,7 +78,7 @@ public class BsParaDetailSVImpl implements IBsParaDetailSV {
 	}
 
 	@Override
-	public Integer deleteBsParaDetail(String regionId, String paraType, String paraCode) {
+	public Integer deleteParaDetail(String regionId, String paraType, String paraCode) {
 		BsParaDetailKey key = new BsParaDetailKey();
 		key.setRegionId(regionId);
 		key.setParaType(paraType);
@@ -91,7 +91,7 @@ public class BsParaDetailSVImpl implements IBsParaDetailSV {
 	}
 
 	@Override
-	public Integer loadBsParaDetail() {
+	public Integer loadParaDetail() {
 		BsParaDetailExample example = new BsParaDetailExample();
 		BsParaDetailExample.Criteria criteria = example.createCriteria();
 		criteria.andStateEqualTo(CacheWebConstant.STATE_IN_USE);
