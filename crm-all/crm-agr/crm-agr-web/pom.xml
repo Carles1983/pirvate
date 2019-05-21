@@ -180,6 +180,12 @@
             <version>2.0.1.Final</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.aii</groupId>
+            <artifactId>component-redis-starter</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
 </project>
