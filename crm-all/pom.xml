@@ -12,6 +12,7 @@
         <module>crm-common</module>
         <module>crm-cache-web</module>
         <module>component-starter</module>
+        <module>crm-ci</module>
     </modules>
 
     <packaging>pom</packaging>
