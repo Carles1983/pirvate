@@ -10,5 +10,6 @@ public class CacheConstant {
 	public static final String I18N_RESOURCE_REDIS_KEY = "cache_i18n_resource";
 	public static final String PARA_DETAIL_REDIS_KEY = "cache_para_detail";
 	public static final String STATIC_DATA_REDIS_KEY = "cache_static_data";
+	public static final String TENANT_REDIS_KEY = "cache_tenant";
 
 }
