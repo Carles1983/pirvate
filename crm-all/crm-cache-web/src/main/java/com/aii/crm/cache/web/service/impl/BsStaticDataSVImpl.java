@@ -35,7 +35,7 @@ public class BsStaticDataSVImpl implements IBsStaticDataSV {
 	private RedisTemplate<String, Object> redisTemplate;
 
 	@Override
-	public Integer saveBsStaticData(StaticData addDto) {
+	public Integer saveStaticData(StaticData addDto) {
 		try {
 			addDto.setState(CacheWebConstant.STATE_IN_USE);
 			BsStaticData bsStaticData = BeanConvertUtil.beanConversion(addDto, BsStaticData.class);
@@ -49,7 +49,7 @@ public class BsStaticDataSVImpl implements IBsStaticDataSV {
 	}
 
 	@Override
-	public PageResult<StaticData> listBsStaticDataPages(Integer pageNo, Integer pageSize) {
+	public PageResult<StaticData> listStaticDataPages(Integer pageNo, Integer pageSize) {
 		Page<BsStaticData> page = PageHelper.startPage(pageNo, pageSize, true);
 		BsStaticDataExample example = new BsStaticDataExample();
 		staticDataMapper.selectByExample(example);
@@ -63,7 +63,7 @@ public class BsStaticDataSVImpl implements IBsStaticDataSV {
 	}
 
 	@Override
-	public Integer updateBsStaticData(StaticData updateDto) {
+	public Integer updateStaticData(StaticData updateDto) {
 		try {
 			BsStaticData bsStaticData = BeanConvertUtil.beanConversion(updateDto, BsStaticData.class);
 			Integer result = staticDataMapper.updateByPrimaryKeySelective(bsStaticData);
@@ -77,7 +77,7 @@ public class BsStaticDataSVImpl implements IBsStaticDataSV {
 	}
 
 	@Override
-	public Integer deleteBsStaticData(String codeType, String codeValue) {
+	public Integer deleteStaticData(String codeType, String codeValue) {
 		BsStaticDataKey key = new BsStaticDataKey();
 		key.setCodeType(codeType);
 		key.setCodeValue(codeValue);
@@ -89,7 +89,7 @@ public class BsStaticDataSVImpl implements IBsStaticDataSV {
 	}
 
 	@Override
-	public Integer loadBsStaticData() {
+	public Integer loadStaticData() {
 		BsStaticDataExample example = new BsStaticDataExample();
 		BsStaticDataExample.Criteria criteria = example.createCriteria();
 		criteria.andStateEqualTo(CacheWebConstant.STATE_IN_USE);
