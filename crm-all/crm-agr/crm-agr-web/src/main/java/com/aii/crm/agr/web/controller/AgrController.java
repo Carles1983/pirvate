@@ -3,7 +3,6 @@ package com.aii.crm.agr.web.controller;
 import com.aii.crm.agr.web.dto.req.AgrDataReqDto;
 import com.aii.crm.agr.web.dto.res.AgrDataResDto;
 import com.aii.crm.common.exception.CrmCheckedException;
-import com.aii.crm.common.exception.CrmCheckedException;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
