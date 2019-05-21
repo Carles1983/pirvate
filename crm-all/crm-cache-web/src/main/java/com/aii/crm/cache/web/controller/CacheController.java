@@ -8,6 +8,7 @@ import com.aii.crm.cache.web.service.interfaces.IBsParaDetailSV;
 import com.aii.crm.cache.web.service.interfaces.IBsStaticDataSV;
 import com.aii.crm.cache.web.service.interfaces.IBsTenantSV;
 import com.aii.crm.cache.web.service.interfaces.ICfgClientTimeoutSV;
+import com.aii.crm.cache.web.service.interfaces.ICfgHttpClientSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,6 +41,9 @@ public class CacheController {
 
 	@Autowired
 	private ICfgClientTimeoutSV clientTimeoutSV;
+
+	@Autowired
+	private ICfgHttpClientSV httpClientSV;
 
 	@RequestMapping(value = "/district/redis", method = RequestMethod.PUT)
 	public Integer loadBsDistrictToRedis(){
@@ -77,8 +81,13 @@ public class CacheController {
 	}
 
 	@RequestMapping(value = "/clientTimeout/redis", method = RequestMethod.PUT)
-	public Integer loadConfigClientTimeoutToRedis(){
+	public Integer loadCfgClientTimeoutToRedis(){
 		return clientTimeoutSV.loadClientTimeout();
+	}
+
+	@RequestMapping(value = "/httpClient/redis", method = RequestMethod.PUT)
+	public Integer loadCfgHttpClientToRedis(){
+		return httpClientSV.loadHttpClient();
 	}
 
 }
