@@ -21,17 +21,17 @@ public class BsParaDetailController {
 		return paraDetailSV.saveParaDetail(addDto);
 	}
 
-	@RequestMapping(value = "/ftpPaths", method = RequestMethod.GET)
+	@RequestMapping(value = "/paraDetails", method = RequestMethod.GET)
 	public PageResult<ParaDetail> retrieveBsParaDetail(@RequestParam Integer pageNo, @RequestParam Integer pageSize){
 		return paraDetailSV.listParaDetailPages(pageNo, pageSize);
 	}
 
-	@RequestMapping(value = "/ftpPath", method = RequestMethod.PUT)
+	@RequestMapping(value = "/paraDetail", method = RequestMethod.PUT)
 	public Integer updateBsParaDetail(@RequestBody ParaDetail updateDto){
 		return paraDetailSV.updateParaDetail(updateDto);
 	}
 
-	@RequestMapping(value = "/ftpPath", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/paraDetail", method = RequestMethod.DELETE)
 	public Integer deleteBsParaDetail(@RequestParam String regionId, @RequestParam String paraType,
 									  @RequestParam String paraCode){
 		return paraDetailSV.deleteParaDetail(regionId, paraType, paraCode);
