@@ -1,7 +1,7 @@
 package com.aii.crm.agr.web.controller;
 
-import com.aii.crm.agr.persistence.req.AgrDataReqDto;
-import com.aii.crm.agr.persistence.res.AgrDataResDto;
+import com.aii.crm.agr.web.dto.req.AgrDataReqDto;
+import com.aii.crm.agr.web.dto.res.AgrDataResDto;
 import com.aii.crm.common.exception.CrmCheckedException;
 import com.aii.crm.common.exception.CrmCheckedException;
 import java.util.List;
