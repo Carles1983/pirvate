@@ -3,7 +3,6 @@ package com.aii.crm.cache.web.controller;
 import com.aii.crm.cache.web.service.interfaces.IBsDistrictSV;
 import com.aii.crm.common.cache.model.District;
 import com.aii.crm.common.page.PageResult;
-import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
