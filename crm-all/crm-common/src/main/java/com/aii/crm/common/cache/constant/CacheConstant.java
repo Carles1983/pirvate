@@ -15,5 +15,6 @@ public class CacheConstant {
 	public static final String HTTP_CLIENT_REDIS_KEY = "cache_http_client";
 	public static final String HTTP_REDIS_KEY = "cache_http";
 	public static final String MSG_CLIENT_REDIS_KEY = "cache_msg_client";
+	public static final String EXCEPTION_CODE_REDIS_KEY = "cache_ex_code";
 
 }
