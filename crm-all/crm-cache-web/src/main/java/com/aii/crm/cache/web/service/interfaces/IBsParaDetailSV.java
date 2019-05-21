@@ -4,9 +4,9 @@ import com.aii.crm.common.cache.model.ParaDetail;
 import com.aii.crm.common.page.PageResult;
 
 public interface IBsParaDetailSV {
-	Integer saveBsParaDetail(ParaDetail addDto);
-	PageResult<ParaDetail> listBsParaDetailPages(Integer pageNo, Integer pageSize);
-	Integer updateBsParaDetail(ParaDetail updateDto);
-	Integer deleteBsParaDetail(String regionId, String paraType, String paraCode);
-	Integer loadBsParaDetail();
+	Integer saveParaDetail(ParaDetail addDto);
+	PageResult<ParaDetail> listParaDetailPages(Integer pageNo, Integer pageSize);
+	Integer updateParaDetail(ParaDetail updateDto);
+	Integer deleteParaDetail(String regionId, String paraType, String paraCode);
+	Integer loadParaDetail();
 }
