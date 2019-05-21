@@ -5,7 +5,7 @@ import com.aii.crm.cache.web.persistence.bo.CfgClientTimeout;
 import com.aii.crm.cache.web.persistence.bo.CfgClientTimeoutExample;
 import com.aii.crm.cache.web.persistence.bo.CfgClientTimeoutKey;
 import com.aii.crm.cache.web.persistence.mapper.CfgClientTimeoutMapper;
-import com.aii.crm.cache.web.service.interfaces.IConfigClientTimeoutSV;
+import com.aii.crm.cache.web.service.interfaces.ICfgClientTimeoutSV;
 import com.aii.crm.common.bean.BeanConvertUtil;
 import com.aii.crm.common.cache.constant.CacheConstant;
 import com.aii.crm.common.cache.model.ClientTimeout;
@@ -26,7 +26,7 @@ import org.springframework.util.CollectionUtils;
 
 @Service
 @Slf4j
-public class CfgClientTimeoutSVImpl implements IConfigClientTimeoutSV {
+public class CfgClientTimeoutSVImpl implements ICfgClientTimeoutSV {
 
 	@Autowired
 	private CfgClientTimeoutMapper clientTimeoutMapper;
