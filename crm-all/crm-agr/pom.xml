@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>crm-agr-api</module>
-        <module>crm-agr-core</module>
         <module>crm-agr-web</module>
     </modules>
 
