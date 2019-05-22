@@ -12,11 +12,10 @@ public class CiWebConstant {
 	public static final String LAST_INTERACTION_TIME_REDIS_KEY = "last_interaction_time";
 	public static final String CONTACT_COUNT_REDIS_KEY = "contact_count";
 	public static final String INTERACTION_ATTR_REDIS_KEY = "interaction_attr";
-	public static final String INTERACTION_TYPE_REDIS_KEY = "interaction_type";
-
 	public static final String CI_CHANNEL_MAPPING_REDIS_KEY = "cache_ci_channel_mapping";
 	public static final String CI_INTERACTION_TYPE_REDIS_KEY = "cache_ci_interaction_type";
 	public static final String CI_CHANNEL_REDIS_KEY = "cache_ci_channel";
+	public static final String CI_INTERACTION_CATEGORY_REDIS_KEY = "cache_ci_interaction_category";
 
 	public static final Long EVENT_STATE_NOT_SEND = -1L;
 	public static final Long EVENT_STATE_SENDING = 0L;
@@ -44,4 +43,6 @@ public class CiWebConstant {
 
 	public static final String UP_INTERACTION_MONTH = "UP_INTERACTION_MONTH";
 	public static final String UP_INTERACTION_MONTH_KEY = "UP_INTERACTION_MONTH_KEY";
+
+	public static final Long DATA_STATE_IN_USE = 1L;
 }
