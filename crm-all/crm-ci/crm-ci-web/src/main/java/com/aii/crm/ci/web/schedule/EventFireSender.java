@@ -68,7 +68,8 @@ public class EventFireSender {
 		if (!CollectionUtils.isEmpty(attrValues)) {
 			for (CiInteractionAttrValueReqDto attrValue : attrValues) {
 				CiInteractionAttr attrBean = cacheOperation
-						.getCiComponentFromCache(CiWebConstant.INTERACTION_ATTR_REDIS_KEY, attrValue.getInteractionAttrId());
+						.getCiComponentFromCache(CiWebConstant.INTERACTION_ATTR_REDIS_KEY,
+								interactionValue.getInteractionType() + "_" + attrValue.getInteractionAttrCode());
 				if (attrBean != null) {
 					attrMap.put(attrBean.getInteractionAttrCode(), attrValue.getInteractionAttrAttrValue());
 				}
