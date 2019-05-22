@@ -4,7 +4,10 @@ import com.aii.crm.ci.web.dto.req.CiInteractionCommentReqDto;
 import com.aii.crm.ci.web.dto.req.CiInteractionReqDto;
 import com.aii.crm.ci.web.dto.res.CiInteractionCommentResDto;
 import com.aii.crm.ci.web.dto.res.CiInteractionResDto;
+import com.aii.crm.ci.web.service.interfaces.IContactInteractionSV;
+import com.aii.crm.common.exception.CrmCheckedException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,10 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class CustomerInteractionController {
 
-	@RequestMapping(value = "/contact", method = RequestMethod.POST)
-	public CiInteractionResDto createCustomerContact(@RequestBody CiInteractionReqDto interactionReqDto){
+	@Autowired
+	private IContactInteractionSV contactInteractionSV;
 
-		return null;
+	@RequestMapping(value = "/contact", method = RequestMethod.POST)
+	public CiInteractionResDto createCustomerContact(@RequestBody CiInteractionReqDto interactionReqDto) throws CrmCheckedException {
+		return contactInteractionSV.createContact(interactionReqDto);
 	}
 
 	@RequestMapping(value = "/contact", method = RequestMethod.PUT)
