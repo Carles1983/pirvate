@@ -1,0 +1,73 @@
+server:
+  port: 19081
+logging:
+  config: classpath:log4j2-spring.xml
+management:
+  security:
+    enable: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"      
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 10.21.14.164:8848,10.21.14.165:8848,10.21.14.166:8848  
+  redis:
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1
+        min-idle: 0
+    sentinel:
+      master: mymaster
+      nodes: 10.21.14.164:26379,10.21.14.165:26379,10.21.14.166:26379
+      database: 0
+# mybatis-spring-boot-starter
+mybatis:
+  type-aliases-package: com.aii.crm.cache.web.persistence
+  mapper-locations: classpath:com/aii/crm/cache/web/persistence/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    default-fetch-size: 100
+    default-statement-timeout: 30
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# pagehelper-spring-boot-starter
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql   
+
+jdbc:
+  url: jdbc:mysql://10.21.14.165:3306/base
+  driverClass: com.mysql.cj.jdbc.Driver
+  username: root
+  password: TAvEjAsxRwb9LfKKpY1ZQbVBSQ9qUTxhjaAIeUb/sxdUA58QdFPSXUeboNgJkvqyBA+kXUJ5b0TnT3bVk8BA7Q==
+  publicKey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKH+jMPRnEN/PcHG71rACjrGCFc+nUCjB5HSj+gyeNFmt0uLVRf8G2DLk5QxZThovjPgDaHZ0bBDo2yezF6rGcUCAwEAAQ==
+  initialSize: 2
+  minIdle: 1
+  maxActive: 20
+  testOnBorrow: true
+  maxWait: 60000
+  timeBetweenEvictionRunsMillis: 60000
+  minEvictableIdleTimeMillis: 300000
+  validationQuery: SELECT 1 FROM DUAL
+  testWhileIdle: true
+  testOnReturn: false
+  poolPreparedStatements: false
+  maxPoolPreparedStatementPerConnection-size: 20
+  filters: stat,wall,config
+  connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000;config.decrypt=true;config.decrypt.key=${jdbc.publickey}
+  monitor:
+    enabled: enabled
+    druidStatView: /druid/*
+    druidWebStatFilter: /*
+    allow: 219.230.50.107,127.0.0.1
+    deny: 219.230.50.108
+    loginUsername: admin
+    loginPassword: 123456
+    exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+    resetEnable: false
