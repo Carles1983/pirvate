@@ -93,4 +93,6 @@ public interface CiInteractionAttrValueMapper {
      * @mbg.generated Tue May 21 15:48:16 CST 2019
      */
     int updateByPrimaryKey(CiInteractionAttrValue record);
+
+	void insertBatch(List<CiInteractionAttrValue> valueList);
 }
