@@ -6,6 +6,7 @@ import com.aii.crm.ci.web.dto.res.CiInteractionCommentResDto;
 import com.aii.crm.ci.web.dto.res.CiInteractionResDto;
 import com.aii.crm.ci.web.service.interfaces.IContactInteractionSV;
 import com.aii.crm.common.exception.CrmCheckedException;
+import java.text.ParseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +23,8 @@ public class CustomerInteractionController {
 	private IContactInteractionSV contactInteractionSV;
 
 	@RequestMapping(value = "/contact", method = RequestMethod.POST)
-	public CiInteractionResDto createCustomerContact(@RequestBody CiInteractionReqDto interactionReqDto) throws CrmCheckedException {
+	public boolean createCustomerContact(@RequestBody CiInteractionReqDto interactionReqDto) throws CrmCheckedException,
+			ParseException {
 		return contactInteractionSV.createContact(interactionReqDto);
 	}
 
