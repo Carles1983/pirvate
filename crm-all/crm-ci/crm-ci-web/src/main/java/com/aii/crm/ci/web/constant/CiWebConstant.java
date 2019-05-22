@@ -4,8 +4,8 @@ public class CiWebConstant {
 
 	private CiWebConstant(){}
 
-	public static final int CONTACT_STATUS_FINISHED = 1;
-	public static final int CONTACT_STATUS_UNFINISHED = 0;
+	public static final Integer CONTACT_STATUS_FINISHED = 1;
+	public static final Integer CONTACT_STATUS_UNFINISHED = 0;
 
 	public static final String CONTACT_STATUS_REDIS_KEY = "contact_status";
 	public static final String CONTACT_ID_REDIS_KEY = "contact_id";
