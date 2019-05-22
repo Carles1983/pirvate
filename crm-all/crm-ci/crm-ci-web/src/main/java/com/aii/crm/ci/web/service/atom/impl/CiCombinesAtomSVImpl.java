@@ -19,7 +19,12 @@ import com.aii.crm.ci.web.persistence.mapper.CiInteractionMapper;
 import com.aii.crm.ci.web.service.atom.interfaces.ICiCombinedAtomSV;
 import com.aii.crm.common.bean.BeanConvertUtil;
 import java.lang.reflect.InvocationTargetException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +52,7 @@ public class CiCombinesAtomSVImpl implements ICiCombinedAtomSV {
 	private CiInteractionAttrValueMapper interactionAttrValueMapper;
 
 	@Override
-	public CiInteractionReqDto dealInteractionAndAttrValue(CiInteractionReqDto interactionReqDto) {
+	public CiInteractionReqDto dealInteractionAndAttrValue(CiInteractionReqDto interactionReqDto) throws ParseException {
 		if (!StringUtils.isEmpty(interactionReqDto.getSrcInteractionEntityId())) {
 			interactionReqDto.setUpInteractionId(getUpInteractionId(interactionReqDto));
 		} else {
@@ -85,7 +90,7 @@ public class CiCombinesAtomSVImpl implements ICiCombinedAtomSV {
 		return interactionReqDto;
 	}
 
-	private Long getUpInteractionId(CiInteractionReqDto interactionDto) {
+	private Long getUpInteractionId(CiInteractionReqDto interactionDto) throws ParseException {
 		CiInteractionType child = null;
 		CiInteractionType parent = null;
 
@@ -122,10 +127,30 @@ public class CiCombinesAtomSVImpl implements ICiCombinedAtomSV {
 			}
 
 			CiInteraction bean = null;
-			if (parent.getUpInteractionTypeId() != null && parent.getUpInteractionTypeId() > 0) {
-				bean = interactionAtomSV.getInteractionByTypeIdEntityId(queryDto, parent);
+			if (parent.getUpInteractionTypeId() != null) {
+				Long datePos = interactionType.getEntityDatePos();
+				if (datePos == null || datePos == 0) {
+					return 0L;
+				}
+
+				String yearMonth = interactionDto.getSrcInteractionEntityId().substring((int) (datePos - 1),
+						(int) (datePos + 6 - 1));
+				if (yearMonth.length() != 6) {
+					return 0L;
+				}
+				DateFormat sdf = new SimpleDateFormat("yyyyMM");
+				Date date = sdf.parse(yearMonth);
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(date);
+				bean = getParentInteraction(example, criteria, calendar);
 			} else {
-				bean = interactionAtomSV.getInteractionByTypeIdEntityId(queryDto, null);
+				Integer monthBack = cacheOperation.getCiComponentFromCache(CiWebConstant.UP_INTERACTION_MONTH_KEY,
+						CiWebConstant.UP_INTERACTION_MONTH);
+				if(monthBack != null){
+					Calendar calendar = Calendar.getInstance();
+					calendar.add(Calendar.MONTH, -monthBack);
+					bean = getParentInteraction(example, criteria, calendar);
+				}
 			}
 
 			if (bean != null) {
@@ -133,6 +158,40 @@ public class CiCombinesAtomSVImpl implements ICiCombinedAtomSV {
 			}
 		}
 		return 0L;
+	}
+
+	private CiInteraction getParentInteraction(CiInteractionExample example,
+											   CiInteractionExample.Criteria criteria, Calendar calendar){
+		Date startDate = getStartDate(calendar);
+		Date endDate = getEndDate(calendar);
+		criteria.andInteractionTimeBetween(startDate, endDate);
+		List<CiInteraction> interactionList = interactionMapper.selectByExample(example);
+		if(!CollectionUtils.isEmpty(interactionList)){
+			return interactionList.get(0);
+		}
+		return null;
+	}
+
+	private Date getEndDate(Calendar calendar) {
+		//将当前月加1；
+		calendar.add(Calendar.MONTH, 1);
+		//在当前月的下一月基础上减去1毫秒
+		calendar.add(Calendar.MILLISECOND, -1);
+		//获得当前月最后一天
+		return calendar.getTime();
+	}
+
+	private Date getStartDate(Calendar calendar) {
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		//将小时至0
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		//将分钟至0
+		calendar.set(Calendar.MINUTE, 0);
+		//将秒至0
+		calendar.set(Calendar.SECOND,0);
+		//将毫秒至0
+		calendar.set(Calendar.MILLISECOND, 0);
+		return calendar.getTime();
 	}
 
 	@Override
