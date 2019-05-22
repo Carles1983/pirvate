@@ -333,4 +333,65 @@
       INTERACTION_TIME = #{interactionTime,jdbcType=TIMESTAMP}
     where INTERACTION_ATTR_VALUE_ID = #{interactionAttrValueId,jdbcType=BIGINT}
   </update>
+  <insert id="insertByBatch" parameterType="java.util.List">
+    insert into ci_interaction_attr_value (INTERACTION_ATTR_VALUE_ID, INTERACTION_ID,
+    INTERACTION_ATTR_ID, INTERACTION_ATTR_CODE,
+    INTERACTION_ATTR_ATTR_VALUE, CUST_ID, TENANT_ID,
+    INTERACTION_TIME)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+    (
+      #{interactionAttrValueId,jdbcType=BIGINT},
+      #{interactionId,jdbcType=BIGINT},
+      <choose>
+        <when test="interactionAttrId != null">
+          #{interactionAttrId,jdbcType=BIGINT},
+        </when>
+        <otherwise>
+          '',
+        </otherwise>
+      </choose>
+      <choose>
+        <when test="interactionAttrCode != null">
+          #{interactionAttrCode,jdbcType=VARCHAR},
+        </when>
+        <otherwise>
+          '',
+        </otherwise>
+      </choose>
+      <choose>
+        <when test="interactionAttrAttrValue != null">
+          #{interactionAttrAttrValue,jdbcType=VARCHAR},
+        </when>
+        <otherwise>
+          '',
+        </otherwise>
+      </choose>
+      <choose>
+        <when test="custId != null">
+          #{custId,jdbcType=BIGINT},
+        </when>
+        <otherwise>
+          '',
+        </otherwise>
+      </choose>
+      <choose>
+        <when test="tenantId != null">
+          #{tenantId,jdbcType=VARCHAR},
+        </when>
+        <otherwise>
+          '',
+        </otherwise>
+      </choose>
+      <choose>
+        <when test="interactionTime != null">
+          #{interactionTime,jdbcType=TIMESTAMP},
+        </when>
+        <otherwise>
+          SYSDATE(),
+        </otherwise>
+      </choose>
+    )
+    </foreach>
+  </insert>
 </mapper>
