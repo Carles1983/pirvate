@@ -198,7 +198,8 @@ public class ContactInteractionSVImpl implements IContactInteractionSV {
 
 
 	@Override
-	public void createInteraction(CiInteractionReqDto interactionReqDto) throws CrmCheckedException, ParseException, IllegalAccessException, InvocationTargetException, InstantiationException {
+	public boolean createInteraction(CiInteractionReqDto interactionReqDto) throws CrmCheckedException, ParseException,
+			IllegalAccessException, InvocationTargetException, InstantiationException {
 		// TODO 获取租户id
 		// TODO 获取组织id
 		// TODO 获取操作人id
@@ -222,12 +223,13 @@ public class ContactInteractionSVImpl implements IContactInteractionSV {
 		}
 
 		createCustomerInteraction(interactionReqDto);
+		return true;
 	}
 
 	private void createCustomerInteraction(CiInteractionReqDto interactionReqDto) throws CrmCheckedException, ParseException, IllegalAccessException, InstantiationException, InvocationTargetException {
 		CiInteractionType interactionType =
 				cacheOperation.getCiComponentFromCache(CiWebConstant.CI_INTERACTION_TYPE_REDIS_KEY,
-						interactionReqDto.getSrcBusiType()+"_"+interactionReqDto.getSrcSysId());
+						interactionReqDto.getSrcBusiType() + "_" + interactionReqDto.getSrcSysId());
 
 		if (interactionType != null) {
 			interactionReqDto.setInteractionType(interactionType.getInteractionTypeId());
@@ -245,12 +247,12 @@ public class ContactInteractionSVImpl implements IContactInteractionSV {
 		}
 
 		Integer stateFlag = cacheOperation.getCiComponentFromCache(CiWebConstant.CONTACT_STATUS_REDIS_KEY, contactHKey);
-		if(stateFlag == null){
+		if (stateFlag == null) {
 			// 从数据库获取接触
 			CiContact contact = contactAtomSV.getLatestContact(interactionReqDto.getChannelId(),
 					interactionReqDto.getCustId());
 			// 接触表没有记录
-			if(contact == null){
+			if (contact == null) {
 				// 新建接触、交互并更新Redis缓存
 				customerContactCreation(interactionReqDto, contactHKey);
 			}
@@ -320,7 +322,7 @@ public class ContactInteractionSVImpl implements IContactInteractionSV {
 				contactHKey);
 		cacheOperation.putCiComponentFromCache(CiWebConstant.CONTACT_COUNT_REDIS_KEY, contactHKey,
 				interactionCount == null ? 1 :
-				(interactionCount + 1));
+						(interactionCount + 1));
 
 		// 将缓存中的交互时间设置为当前交互时间
 		cacheOperation.putCiComponentFromCache(CiWebConstant.LAST_INTERACTION_TIME_REDIS_KEY, contactHKey,
@@ -339,6 +341,83 @@ public class ContactInteractionSVImpl implements IContactInteractionSV {
 			EventFireSchedule.startFire(interactionReqDto, interactionReqDto.getInteractionAttrValueDtoList(),
 					channel.getEventFireInterval(), channel.getEventMaxTryTimes(), true);
 		}
+	}
+
+	@Override
+	public boolean finishCustomerContact(CiInteractionReqDto interactionReqDto) throws ParseException, IllegalAccessException, InvocationTargetException, InstantiationException {
+		if (interactionReqDto == null) {
+			return false;
+		}
+		//TODO 获取租户的id
+		CiChannel channel = cacheOperation.getCiComponentFromCache(CiWebConstant.CI_CHANNEL_REDIS_KEY,
+				interactionReqDto.getChannelCode() + "_" + interactionReqDto.getSrcSysId());
+		interactionReqDto.setChannelId(interactionReqDto.getChannelId());
+		if (interactionReqDto.getCompleteTime() == null) {
+			interactionReqDto.setCompleteTime(TimesUtil.getDefaultTime());
+		}
+
+		// 建接触key
+		String contactHKey = interactionReqDto.getChannelId() + "_" + interactionReqDto.getCustId();
+		// 获取当前缓存中的接触完成标识
+		Integer finishFlag = cacheOperation.getCiComponentFromCache(CiWebConstant.CONTACT_STATUS_REDIS_KEY,
+				contactHKey);
+
+		CiContact contact = null;
+		// 存在接触完成状态标识
+		if (finishFlag != null) {
+			// 已完成状态不做任何操作
+			// 未完成状态获取contact_id
+			if (CiWebConstant.CONTACT_STATUS_UNFINISHED.equals(finishFlag)) {
+				Long contactIdInRedis = cacheOperation.getCiComponentFromCache(CiWebConstant.CONTACT_ID_REDIS_KEY,
+						contactHKey);
+
+				// 不存在接触id
+				if (contactIdInRedis == null) {
+					// 从数据库获取接触
+					contact = contactAtomSV.getLatestContact(interactionReqDto.getChannelId(),
+							interactionReqDto.getCustId());
+				}
+				// 存在接触id
+				else {
+					contact = contactAtomSV.getContactByPrimaryKey(contactIdInRedis);
+				}
+			}
+		}
+		// 不存在接触完成状态标识
+		else{
+			contact = contactAtomSV.getLatestContact(interactionReqDto.getChannelId(),
+					interactionReqDto.getCustId());
+		}
+
+		if (contact != null) {
+			// 新增一次交互
+			interactionReqDto.setContactId(contact.getContactId());
+
+			// 处理InteractionAttrValue的数据
+			combinedSV.dealInteractionAndAttrValue(interactionReqDto);
+			CiInteraction interaction = BeanConvertUtil.beanConversion(interactionReqDto, CiInteraction.class);
+			interactionAtomSV.saveInteraction(interaction);
+			// 更新接触信息
+			// 更新接触表中的complete_time和duration;
+			contact.setCompleteTime(interactionReqDto.getCompleteTime());
+			contact.setDurationInterval((interactionReqDto.getCompleteTime().getTime() - contact.getContactTime().getTime()) / 1000);
+			contact.setInteractionCount((contact.getInteractionCount() == null ? 0 : contact.getInteractionCount()) + 1);
+			contactAtomSV.updateContact(contact);
+		}
+
+		// 将缓存中的完成标识设置为已完成
+		cacheOperation.putCiComponentFromCache(CiWebConstant.CONTACT_STATUS_REDIS_KEY, contactHKey,
+				CiWebConstant.CONTACT_STATUS_FINISHED);
+
+		// 将缓存中的contactId删除
+		cacheOperation.deleteCiComponentFromCache(CiWebConstant.CONTACT_ID_REDIS_KEY, contactHKey);
+
+		// 将缓存中接触的交互次数删除
+		cacheOperation.deleteCiComponentFromCache(CiWebConstant.CONTACT_COUNT_REDIS_KEY, contactHKey);
+
+		// 将缓存中的交互时间删除
+		cacheOperation.deleteCiComponentFromCache(CiWebConstant.LAST_INTERACTION_TIME_REDIS_KEY, contactHKey);
+		return true;
 	}
 
 }
