@@ -1,0 +1,64 @@
+server:
+  port: 19082
+logging:
+  config: classpath:log4j2-spring.xml
+management:
+  security:
+    enable: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"      
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 10.21.14.164:8848,10.21.14.165:8848,10.21.14.166:8848  
+  shardingsphere:
+    datasource:
+      name: ds0
+      ds0: 
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://10.21.14.165:3306/agr?serverTimezone=Asia/Shanghai&useSSL=false
+        username: root
+        password: 123456
+    sharding:    
+      tables:
+        agr_agreement_h:
+          tableStrategy: 
+            standard:
+              shardingColumn: DONE_DATE
+              precise-algorithm-class-name: com.aii.crm.common.sharding.DateSharingAlgorithm
+              range-algorithm-class-name: com.aii.crm.common.sharding.DateSharingAlgorithm
+        agr_attach_h:
+          tableStrategy: 
+            standard:
+              shardingColumn: DONE_DATE
+              precise-algorithm-class-name: com.aii.crm.common.sharding.DateSharingAlgorithm
+              range-algorithm-class-name: com.aii.crm.common.sharding.DateSharingAlgorithm    
+        agr_template_h:
+          tableStrategy: 
+            standard:
+              shardingColumn: DONE_DATE
+              precise-algorithm-class-name: com.aii.crm.common.sharding.DateSharingAlgorithm
+              range-algorithm-class-name: com.aii.crm.common.sharding.DateSharingAlgorithm          
+      defaultDataSourceName: ds0
+    props:
+      sql:
+        show: true
+# mybatis-spring-boot-starter
+mybatis:
+  type-aliases-package: com.aii.crm.agr.web.persistence
+  mapper-locations: classpath:com/aii/crm/agr/web/persistence/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    default-fetch-size: 100
+    default-statement-timeout: 30
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# pagehelper-spring-boot-starter
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql   
