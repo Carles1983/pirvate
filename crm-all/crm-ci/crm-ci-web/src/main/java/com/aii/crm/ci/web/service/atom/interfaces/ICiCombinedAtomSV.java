@@ -8,4 +8,6 @@ public interface ICiCombinedAtomSV {
 	CiInteractionReqDto dealInteractionAndAttrValue(CiInteractionReqDto interactionReqDto) throws ParseException;
 
 	boolean saveContact(CiContact contact, CiInteractionReqDto interactionReqDto);
+
+	boolean cacheToRedis();
 }
