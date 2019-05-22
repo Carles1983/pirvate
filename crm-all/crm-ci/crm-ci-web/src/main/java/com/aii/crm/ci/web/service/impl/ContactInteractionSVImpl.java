@@ -2,17 +2,21 @@ package com.aii.crm.ci.web.service.impl;
 
 import com.aii.crm.ci.web.cache.CiCacheOperation;
 import com.aii.crm.ci.web.constant.CiWebConstant;
+import com.aii.crm.ci.web.dto.req.CiInteractionCommentReqDto;
 import com.aii.crm.ci.web.dto.req.CiInteractionReqDto;
+import com.aii.crm.ci.web.dto.res.CiInteractionCommentResDto;
 import com.aii.crm.ci.web.persistence.bo.CiChannel;
 import com.aii.crm.ci.web.persistence.bo.CiChannelMapping;
 import com.aii.crm.ci.web.persistence.bo.CiContact;
 import com.aii.crm.ci.web.persistence.bo.CiInteraction;
+import com.aii.crm.ci.web.persistence.bo.CiInteractionComment;
 import com.aii.crm.ci.web.persistence.bo.CiInteractionType;
 import com.aii.crm.ci.web.schedule.ContactTimeSchedule;
 import com.aii.crm.ci.web.schedule.EventFireSchedule;
 import com.aii.crm.ci.web.service.atom.interfaces.ICiCombinedAtomSV;
 import com.aii.crm.ci.web.service.atom.interfaces.IContactAtomSV;
 import com.aii.crm.ci.web.service.atom.interfaces.IInteractionAtomSV;
+import com.aii.crm.ci.web.service.atom.interfaces.IInteractionCommentAtomSV;
 import com.aii.crm.ci.web.service.interfaces.IContactInteractionSV;
 import com.aii.crm.common.bean.BeanConvertUtil;
 import com.aii.crm.common.exception.CrmCheckedException;
@@ -35,6 +39,9 @@ public class ContactInteractionSVImpl implements IContactInteractionSV {
 
 	@Autowired
 	private IInteractionAtomSV interactionAtomSV;
+
+	@Autowired
+	private IInteractionCommentAtomSV interactionCommentAtomSV;
 
 	@Autowired
 	private ICiCombinedAtomSV combinedSV;
@@ -384,7 +391,7 @@ public class ContactInteractionSVImpl implements IContactInteractionSV {
 			}
 		}
 		// 不存在接触完成状态标识
-		else{
+		else {
 			contact = contactAtomSV.getLatestContact(interactionReqDto.getChannelId(),
 					interactionReqDto.getCustId());
 		}
@@ -418,6 +425,28 @@ public class ContactInteractionSVImpl implements IContactInteractionSV {
 		// 将缓存中的交互时间删除
 		cacheOperation.deleteCiComponentFromCache(CiWebConstant.LAST_INTERACTION_TIME_REDIS_KEY, contactHKey);
 		return true;
+	}
+
+	@Override
+	public CiInteractionCommentResDto createInteractionComment(CiInteractionCommentReqDto interactionCommentReqDto) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+		if (interactionCommentReqDto == null) {
+			return null;
+		}
+
+		if (interactionCommentReqDto.getCreateDate() == null) {
+			interactionCommentReqDto.setCreateDate(TimesUtil.getDefaultTime());
+		}
+
+		if (interactionCommentReqDto.getInteractionTime() == null) {
+			CiInteraction interaction =
+					interactionAtomSV.getInteractionByPrimaryKey(interactionCommentReqDto.getInteractionId());
+			interactionCommentReqDto.setInteractionTime(interaction.getCompleteTime());
+		}
+
+		CiInteractionComment comment = BeanConvertUtil.beanConversion(interactionCommentReqDto,
+				CiInteractionComment.class);
+		CiInteractionComment commentRes = interactionCommentAtomSV.saveInteractionComment(comment);
+		return BeanConvertUtil.beanConversion(commentRes, CiInteractionCommentResDto.class);
 	}
 
 }
