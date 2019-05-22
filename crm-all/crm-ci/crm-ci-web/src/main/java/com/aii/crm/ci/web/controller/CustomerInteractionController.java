@@ -29,9 +29,8 @@ public class CustomerInteractionController {
 	}
 
 	@RequestMapping(value = "/contact", method = RequestMethod.PUT)
-	public CiInteractionResDto finishCustomerContact(@RequestBody CiInteractionReqDto interactionReqDto){
-
-		return null;
+	public boolean finishCustomerContact(@RequestBody CiInteractionReqDto interactionReqDto){
+		return contactInteractionSV.finishCustomerContact(interactionReqDto);
 	}
 
 	@RequestMapping(value = "/contact/comment", method = RequestMethod.POST)
