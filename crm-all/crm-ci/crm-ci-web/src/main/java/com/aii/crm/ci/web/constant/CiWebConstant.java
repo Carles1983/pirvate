@@ -18,13 +18,13 @@ public class CiWebConstant {
 	public static final String CI_INTERACTION_TYPE_REDIS_KEY = "cache_ci_interaction_type";
 	public static final String CI_CHANNEL_REDIS_KEY = "cache_ci_channel";
 
-	public static final long EVENT_STATE_NOT_SEND = -1L;
-	public static final long EVENT_STATE_SENDING = 0L;
-	public static final long EVENT_STATE_SEND_OK = 1L;
-	public static final long EVENT_STATE_SEND_ERROR = 2L;
+	public static final Long EVENT_STATE_NOT_SEND = -1L;
+	public static final Long EVENT_STATE_SENDING = 0L;
+	public static final Long EVENT_STATE_SEND_OK = 1L;
+	public static final Long EVENT_STATE_SEND_ERROR = 2L;
 
-	public static final long EVENT_SWITCH_STATE_OPEN = 1;
-	public static final long EVENT_SWITCH_STATE_CLOSE = 0;
+	public static final Long EVENT_SWITCH_STATE_OPEN = 1L;
+	public static final Long EVENT_SWITCH_STATE_CLOSE = 0L;
 
 	//接触类型  OB：客户被动接触
 	public static final Long CONTACT_TYPE_OB = 0L;
@@ -41,4 +41,7 @@ public class CiWebConstant {
 	public static final String CONTACT_RESULT_OBREFUSE = "OBREFUSE";
 	// IBMISS：Inbound未达
 	public static final String CONTACT_RESULT_IBMISS = "IBMISS";
+
+	public static final String UP_INTERACTION_MONTH = "UP_INTERACTION_MONTH";
+	public static final String UP_INTERACTION_MONTH_KEY = "UP_INTERACTION_MONTH_KEY";
 }
