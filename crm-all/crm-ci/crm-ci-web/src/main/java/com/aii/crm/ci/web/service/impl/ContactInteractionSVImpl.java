@@ -7,18 +7,18 @@ import com.aii.crm.ci.web.persistence.bo.CiChannel;
 import com.aii.crm.ci.web.persistence.bo.CiChannelMapping;
 import com.aii.crm.ci.web.persistence.bo.CiContact;
 import com.aii.crm.ci.web.persistence.bo.CiInteraction;
-import com.aii.crm.ci.web.persistence.bo.CiInteractionExample;
 import com.aii.crm.ci.web.persistence.bo.CiInteractionType;
-import com.aii.crm.ci.web.persistence.mapper.CiEventFireMapper;
 import com.aii.crm.ci.web.schedule.ContactTimeSchedule;
 import com.aii.crm.ci.web.schedule.EventFireSchedule;
 import com.aii.crm.ci.web.service.atom.interfaces.ICiCombinedAtomSV;
 import com.aii.crm.ci.web.service.atom.interfaces.IContactAtomSV;
+import com.aii.crm.ci.web.service.atom.interfaces.IInteractionAtomSV;
 import com.aii.crm.ci.web.service.interfaces.IContactInteractionSV;
 import com.aii.crm.common.bean.BeanConvertUtil;
 import com.aii.crm.common.exception.CrmCheckedException;
 import com.aii.crm.common.time.TimesUtil;
 import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,21 +28,21 @@ import org.springframework.stereotype.Service;
 public class ContactInteractionSVImpl implements IContactInteractionSV {
 
 	@Autowired
-	private CiEventFireMapper eventFireMapper;
-
-	@Autowired
 	private CiCacheOperation cacheOperation;
 
 	@Autowired
 	private IContactAtomSV contactAtomSV;
 
 	@Autowired
+	private IInteractionAtomSV interactionAtomSV;
+
+	@Autowired
 	private ICiCombinedAtomSV combinedSV;
 
 	@Override
-	public void createContact(CiInteractionReqDto interactionReqDto) throws CrmCheckedException {
+	public boolean createContact(CiInteractionReqDto interactionReqDto) throws CrmCheckedException, ParseException {
 		if (interactionReqDto == null) {
-			return;
+			return false;
 		}
 
 		// TODO 获取租户的id
@@ -62,32 +62,7 @@ public class ContactInteractionSVImpl implements IContactInteractionSV {
 		}
 
 		createCustomerContact(interactionReqDto);
-	}
-
-	@Override
-	public void createInteraction(CiInteractionReqDto interactionReqDto) throws CrmCheckedException {
-		// TODO 获取组织id
-		// TODO 获取操作人id
-
-		// 获取channel的id
-		CiChannelMapping channelMapping =
-				cacheOperation.getCiComponentFromCache(CiWebConstant.CI_CHANNEL_MAPPING_REDIS_KEY,
-						interactionReqDto.getChannelCode() + "_" + interactionReqDto.getSrcSysId());
-		interactionReqDto.setChannelId(channelMapping.getChannelId());
-
-		if (interactionReqDto.getInteractionTime() == null) {
-			interactionReqDto.setInteractionTime(TimesUtil.getDefaultTime());
-		}
-
-		if (interactionReqDto.getCompleteTime() == null) {
-			interactionReqDto.setCompleteTime(interactionReqDto.getInteractionTime());
-		}
-
-		if (interactionReqDto.getContactTime() == null) {
-			interactionReqDto.setContactTime(interactionReqDto.getInteractionTime());
-		}
-
-		contactInteractionCreation(interactionReqDto);
+		return true;
 	}
 
 	/**
@@ -104,7 +79,7 @@ public class ContactInteractionSVImpl implements IContactInteractionSV {
 	 * <p>
 	 * 接触新增完成后新建计算线程
 	 */
-	private void createCustomerContact(CiInteractionReqDto interactionReqDto) throws CrmCheckedException {
+	private void createCustomerContact(CiInteractionReqDto interactionReqDto) throws CrmCheckedException, ParseException {
 
 		// 根据channel_id获取ci_channel表中的CONTACT_TIMEOUT的值(分钟)
 		CiChannel channel = cacheOperation.getCiComponentFromCache(CiWebConstant.CI_CHANNEL_REDIS_KEY,
@@ -181,7 +156,7 @@ public class ContactInteractionSVImpl implements IContactInteractionSV {
 				interactionReqDto.getCompleteTime().getTime(), channel.getContactTimeout());
 	}
 
-	private void customerContactCreation(CiInteractionReqDto interactionReqDto, String contactHKey) throws CrmCheckedException {
+	private void customerContactCreation(CiInteractionReqDto interactionReqDto, String contactHKey) throws CrmCheckedException, ParseException {
 		// TODO contactId
 		Long contactId = 1L;
 
@@ -217,14 +192,153 @@ public class ContactInteractionSVImpl implements IContactInteractionSV {
 
 		// 触发事件
 		if (interactionReqDto.getEventState() == CiWebConstant.EVENT_STATE_SENDING) {
-			CiChannel channel = cacheOperation.getCiComponentFromCache(CiWebConstant.CI_CHANNEL_REDIS_KEY,
-					interactionReqDto.getChannelId());
-			if (channel != null) {
-				EventFireSchedule.startFire(interactionReqDto, interactionReqDto.getInteractionAttrValueDtoList(),
-						channel.getEventFireInterval(), channel.getEventMaxTryTimes(), true);
-			}
+			beginFire(interactionReqDto);
+		}
+	}
+
+
+	@Override
+	public void createInteraction(CiInteractionReqDto interactionReqDto) throws CrmCheckedException, ParseException, IllegalAccessException, InvocationTargetException, InstantiationException {
+		// TODO 获取租户id
+		// TODO 获取组织id
+		// TODO 获取操作人id
+
+		// 获取channel的id
+		CiChannelMapping channelMapping =
+				cacheOperation.getCiComponentFromCache(CiWebConstant.CI_CHANNEL_MAPPING_REDIS_KEY,
+						interactionReqDto.getChannelCode() + "_" + interactionReqDto.getSrcSysId());
+		interactionReqDto.setChannelId(channelMapping.getChannelId());
+
+		if (interactionReqDto.getInteractionTime() == null) {
+			interactionReqDto.setInteractionTime(TimesUtil.getDefaultTime());
 		}
 
+		if (interactionReqDto.getCompleteTime() == null) {
+			interactionReqDto.setCompleteTime(interactionReqDto.getInteractionTime());
+		}
+
+		if (interactionReqDto.getContactTime() == null) {
+			interactionReqDto.setContactTime(interactionReqDto.getInteractionTime());
+		}
+
+		createCustomerInteraction(interactionReqDto);
+	}
+
+	private void createCustomerInteraction(CiInteractionReqDto interactionReqDto) throws CrmCheckedException, ParseException, IllegalAccessException, InstantiationException, InvocationTargetException {
+		CiInteractionType interactionType =
+				cacheOperation.getCiComponentFromCache(CiWebConstant.CI_INTERACTION_TYPE_REDIS_KEY,
+						interactionReqDto.getSrcBusiType()+"_"+interactionReqDto.getSrcSysId());
+
+		if (interactionType != null) {
+			interactionReqDto.setInteractionType(interactionType.getInteractionTypeId());
+		} else {
+			throw new CrmCheckedException("Interaction Type not exists.", new Exception());
+		}
+
+		// 建立接触key
+		String contactHKey = interactionReqDto.getChannelId() + "_" + interactionReqDto.getCustId();
+
+		CiChannel channel = cacheOperation.getCiComponentFromCache(CiWebConstant.CI_CHANNEL_REDIS_KEY,
+				interactionReqDto.getChannelId());
+		if (channel == null) {
+			throw new CrmCheckedException("Contact timeout configuration must exist.", new Exception());
+		}
+
+		Integer stateFlag = cacheOperation.getCiComponentFromCache(CiWebConstant.CONTACT_STATUS_REDIS_KEY, contactHKey);
+		if(stateFlag == null){
+			// 从数据库获取接触
+			CiContact contact = contactAtomSV.getLatestContact(interactionReqDto.getChannelId(),
+					interactionReqDto.getCustId());
+			// 接触表没有记录
+			if(contact == null){
+				// 新建接触、交互并更新Redis缓存
+				customerContactCreation(interactionReqDto, contactHKey);
+			}
+			// 接触表有记录
+			else {
+				// 判断当前接触是否结束
+				boolean isFinished =
+						(interactionReqDto.getCompleteTime().getTime() - contact.getCompleteTime().getTime()) >= (channel.getContactTimeout() * 60 * 1000);
+				// 当前接触已超时，新建接触、交互并更新Redis缓存
+				if (isFinished) {
+					// 新建接触、交互并更新Redis缓存
+					customerContactCreation(interactionReqDto, contactHKey);
+				}
+				// 接触未超时，新建交互；并将Redis缓存中的信息更新
+				else {
+					// 保存交互
+					Long contactId = contact.getContactId();
+					customerInteractionCreation(contactId, interactionReqDto, contactHKey);
+				}
+			}
+		}
+		// 存在接触完成状态标识
+		else {
+			// 完成状态
+			if (stateFlag == CiWebConstant.CONTACT_STATUS_FINISHED) {
+				// 新建接触、交互并更新Redis缓存
+				customerContactCreation(interactionReqDto, contactHKey);
+			}
+			// 未完成状态
+			else {
+				// 从Redis缓存中获取contact_id
+				Long contactId = cacheOperation.getCiComponentFromCache(CiWebConstant.CONTACT_ID_REDIS_KEY,
+						contactHKey);
+				// 缓存中没有contact_id(正常情况下不应该存在这种情况)
+				if (contactId == null) {
+					throw new CrmCheckedException("Error! No contact info exist in Redis.", new Exception());
+				}
+				// 缓存中有contact_id
+				else {
+					customerInteractionCreation(contactId, interactionReqDto, contactHKey);
+				}
+			}
+		}
+		// 启动接触结束计算
+		ContactTimeSchedule.startCommand(interactionReqDto.getChannelId(), contactHKey,
+				interactionReqDto.getCompleteTime().getTime(), channel.getContactTimeout());
+	}
+
+	private void customerInteractionCreation(Long contactId, CiInteractionReqDto interactionReqDto, String contactHKey) throws ParseException, IllegalAccessException, InvocationTargetException, InstantiationException {
+		interactionReqDto.setContactId(contactId);
+
+		// 处理InteractionAttrValue的数据
+		interactionReqDto = combinedSV.dealInteractionAndAttrValue(interactionReqDto);
+
+		CiInteraction interaction = BeanConvertUtil.beanConversion(interactionReqDto, CiInteraction.class);
+		interactionAtomSV.saveInteraction(interaction);
+
+		// 将缓存中的完成标识设置为未完成
+		cacheOperation.putCiComponentFromCache(CiWebConstant.CONTACT_STATUS_REDIS_KEY, contactHKey,
+				CiWebConstant.CONTACT_STATUS_UNFINISHED);
+
+		// 将缓存中的contactId设置为新建的contactId
+		cacheOperation.putCiComponentFromCache(CiWebConstant.CONTACT_ID_REDIS_KEY, contactHKey, contactId);
+
+		// 将缓存中接触的交互次数设置为1
+		Integer interactionCount = cacheOperation.getCiComponentFromCache(CiWebConstant.CONTACT_COUNT_REDIS_KEY,
+				contactHKey);
+		cacheOperation.putCiComponentFromCache(CiWebConstant.CONTACT_COUNT_REDIS_KEY, contactHKey,
+				interactionCount == null ? 1 :
+				(interactionCount + 1));
+
+		// 将缓存中的交互时间设置为当前交互时间
+		cacheOperation.putCiComponentFromCache(CiWebConstant.LAST_INTERACTION_TIME_REDIS_KEY, contactHKey,
+				interactionReqDto.getCompleteTime().getTime());
+
+		// 触发事件
+		if (CiWebConstant.EVENT_STATE_SENDING.equals(interactionReqDto.getEventState())) {
+			beginFire(interactionReqDto);
+		}
+	}
+
+	private void beginFire(CiInteractionReqDto interactionReqDto) {
+		CiChannel channel = cacheOperation.getCiComponentFromCache(CiWebConstant.CI_CHANNEL_REDIS_KEY,
+				interactionReqDto.getChannelId());
+		if (channel != null) {
+			EventFireSchedule.startFire(interactionReqDto, interactionReqDto.getInteractionAttrValueDtoList(),
+					channel.getEventFireInterval(), channel.getEventMaxTryTimes(), true);
+		}
 	}
 
 }
