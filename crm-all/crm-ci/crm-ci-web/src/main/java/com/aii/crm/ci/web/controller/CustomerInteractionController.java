@@ -6,6 +6,7 @@ import com.aii.crm.ci.web.dto.res.CiInteractionCommentResDto;
 import com.aii.crm.ci.web.dto.res.CiInteractionResDto;
 import com.aii.crm.ci.web.service.interfaces.IContactInteractionSV;
 import com.aii.crm.common.exception.CrmCheckedException;
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,20 +30,18 @@ public class CustomerInteractionController {
 	}
 
 	@RequestMapping(value = "/contact", method = RequestMethod.PUT)
-	public boolean finishCustomerContact(@RequestBody CiInteractionReqDto interactionReqDto){
+	public boolean finishCustomerContact(@RequestBody CiInteractionReqDto interactionReqDto) throws InvocationTargetException, InstantiationException, ParseException, IllegalAccessException {
 		return contactInteractionSV.finishCustomerContact(interactionReqDto);
 	}
 
 	@RequestMapping(value = "/contact/comment", method = RequestMethod.POST)
-	public CiInteractionCommentResDto finishCustomerContact(@RequestBody CiInteractionCommentReqDto interactionCommentReqDto){
-
-		return null;
+	public CiInteractionCommentResDto createInteractionComment(@RequestBody CiInteractionCommentReqDto interactionCommentReqDto){
+		return contactInteractionSV.createInteractionComment(interactionCommentReqDto);
 	}
 
 	@RequestMapping(value = "/interaction", method = RequestMethod.POST)
-	public CiInteractionResDto createCustomerInteraction(@RequestBody CiInteractionReqDto interactionReqDto){
-
-		return null;
+	public boolean createCustomerInteraction(@RequestBody CiInteractionReqDto interactionReqDto) throws InvocationTargetException, CrmCheckedException, InstantiationException, ParseException, IllegalAccessException {
+		return contactInteractionSV.createInteraction(interactionReqDto);
 	}
 
 }
