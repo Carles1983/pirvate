@@ -11,6 +11,6 @@ public interface IContactInteractionSV {
 	boolean createContact(CiInteractionReqDto interactionReqDto) throws CrmCheckedException, ParseException;
 	boolean createInteraction(CiInteractionReqDto interactionReqDto) throws CrmCheckedException, ParseException,
 			IllegalAccessException, InvocationTargetException, InstantiationException;
-	boolean finishCustomerContact(CiInteractionReqDto interactionReqDto) throws ParseException, IllegalAccessException, InvocationTargetException, InstantiationException;
+	boolean finishCustomerContact(CiInteractionReqDto interactionReqDto) throws ParseException, IllegalAccessException, InvocationTargetException, InstantiationException, CrmCheckedException;
 	CiInteractionCommentResDto createInteractionComment(CiInteractionCommentReqDto interactionCommentReqDto) throws IllegalAccessException, InvocationTargetException, InstantiationException;
 }
