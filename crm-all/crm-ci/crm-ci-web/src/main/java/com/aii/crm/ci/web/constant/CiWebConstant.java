@@ -11,7 +11,7 @@ public class CiWebConstant {
 	public static final String CONTACT_ID_REDIS_KEY = "contact_id";
 	public static final String LAST_INTERACTION_TIME_REDIS_KEY = "last_interaction_time";
 	public static final String CONTACT_COUNT_REDIS_KEY = "contact_count";
-	public static final String INTERACTION_ATTR_REDIS_KEY = "interaction_attr";
+	public static final String CI_INTERACTION_ATTR_REDIS_KEY = "interaction_attr";
 	public static final String CI_CHANNEL_MAPPING_REDIS_KEY = "cache_ci_channel_mapping";
 	public static final String CI_INTERACTION_TYPE_REDIS_KEY = "cache_ci_interaction_type";
 	public static final String CI_CHANNEL_REDIS_KEY = "cache_ci_channel";
