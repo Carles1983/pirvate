@@ -3,7 +3,6 @@ package com.aii.crm.ci.web.controller;
 import com.aii.crm.ci.web.dto.req.CiInteractionCommentReqDto;
 import com.aii.crm.ci.web.dto.req.CiInteractionReqDto;
 import com.aii.crm.ci.web.dto.res.CiInteractionCommentResDto;
-import com.aii.crm.ci.web.dto.res.CiInteractionResDto;
 import com.aii.crm.ci.web.service.interfaces.IContactInteractionSV;
 import com.aii.crm.common.exception.CrmCheckedException;
 import java.lang.reflect.InvocationTargetException;
@@ -30,12 +29,12 @@ public class CustomerInteractionController {
 	}
 
 	@RequestMapping(value = "/contact", method = RequestMethod.PUT)
-	public boolean finishCustomerContact(@RequestBody CiInteractionReqDto interactionReqDto) throws InvocationTargetException, InstantiationException, ParseException, IllegalAccessException {
+	public boolean finishCustomerContact(@RequestBody CiInteractionReqDto interactionReqDto) throws InvocationTargetException, InstantiationException, ParseException, IllegalAccessException, CrmCheckedException {
 		return contactInteractionSV.finishCustomerContact(interactionReqDto);
 	}
 
 	@RequestMapping(value = "/contact/comment", method = RequestMethod.POST)
-	public CiInteractionCommentResDto createInteractionComment(@RequestBody CiInteractionCommentReqDto interactionCommentReqDto){
+	public CiInteractionCommentResDto createInteractionComment(@RequestBody CiInteractionCommentReqDto interactionCommentReqDto) throws IllegalAccessException, InstantiationException, InvocationTargetException {
 		return contactInteractionSV.createInteractionComment(interactionCommentReqDto);
 	}
 
