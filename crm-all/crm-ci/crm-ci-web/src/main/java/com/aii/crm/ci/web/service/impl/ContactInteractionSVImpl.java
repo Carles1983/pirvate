@@ -351,14 +351,16 @@ public class ContactInteractionSVImpl implements IContactInteractionSV {
 	}
 
 	@Override
-	public boolean finishCustomerContact(CiInteractionReqDto interactionReqDto) throws ParseException, IllegalAccessException, InvocationTargetException, InstantiationException {
+	public boolean finishCustomerContact(CiInteractionReqDto interactionReqDto) throws ParseException, IllegalAccessException, InvocationTargetException, InstantiationException, CrmCheckedException {
 		if (interactionReqDto == null) {
-			return false;
+			throw new CrmCheckedException("param not exist", new Exception());
 		}
 		//TODO 获取租户的id
-		CiChannel channel = cacheOperation.getCiComponentFromCache(CiWebConstant.CI_CHANNEL_REDIS_KEY,
+
+
+		CiChannelMapping channelMapping = cacheOperation.getCiComponentFromCache(CiWebConstant.CI_CHANNEL_MAPPING_REDIS_KEY,
 				interactionReqDto.getChannelCode() + "_" + interactionReqDto.getSrcSysId());
-		interactionReqDto.setChannelId(interactionReqDto.getChannelId());
+		interactionReqDto.setChannelId(channelMapping.getChannelId());
 		if (interactionReqDto.getCompleteTime() == null) {
 			interactionReqDto.setCompleteTime(TimesUtil.getDefaultTime());
 		}
