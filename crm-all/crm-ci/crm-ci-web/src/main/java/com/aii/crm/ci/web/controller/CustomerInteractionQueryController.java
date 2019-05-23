@@ -2,7 +2,6 @@ package com.aii.crm.ci.web.controller;
 
 import com.aii.crm.ci.web.dto.res.CiInteractionResDto;
 import com.aii.crm.common.page.PageResult;
-import com.github.pagehelper.Page;
 import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
