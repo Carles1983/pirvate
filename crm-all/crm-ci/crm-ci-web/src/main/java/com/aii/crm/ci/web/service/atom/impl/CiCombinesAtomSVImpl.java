@@ -109,7 +109,7 @@ public class CiCombinesAtomSVImpl implements ICiCombinedAtomSV {
 					if (!StringUtils.isEmpty(attrValue.getInteractionAttrCode())) {
 						// 根据attrCode获取attrId
 						CiInteractionAttr interactionAttr =
-								cacheOperation.getCiComponentFromCache(CiWebConstant.INTERACTION_ATTR_REDIS_KEY,
+								cacheOperation.getCiComponentFromCache(CiWebConstant.CI_INTERACTION_ATTR_REDIS_KEY,
 										interactionReqDto.getInteractionType() + "_" + attrValue.getInteractionAttrCode());
 						if (interactionAttr != null) {
 							attrValue.setInteractionAttrId(interactionAttr.getInteractionAttrId());
@@ -128,7 +128,7 @@ public class CiCombinesAtomSVImpl implements ICiCombinedAtomSV {
 		CiInteractionType interactionType =
 				cacheOperation.getCiComponentFromCache(CiWebConstant.CI_INTERACTION_TYPE_REDIS_KEY,
 						interactionDto.getSrcBusiType() +
-						"_" + interactionDto.getSrcSysId());
+								"_" + interactionDto.getSrcSysId());
 
 		if (interactionType != null) {
 			child = interactionType;
@@ -179,7 +179,7 @@ public class CiCombinesAtomSVImpl implements ICiCombinedAtomSV {
 			} else {
 				Integer monthBack = cacheOperation.getCiComponentFromCache(CiWebConstant.UP_INTERACTION_MONTH_KEY,
 						CiWebConstant.UP_INTERACTION_MONTH);
-				if(monthBack != null){
+				if (monthBack != null) {
 					Calendar calendar = Calendar.getInstance();
 					calendar.add(Calendar.MONTH, -monthBack);
 					bean = getParentInteraction(example, criteria, calendar);
@@ -194,12 +194,12 @@ public class CiCombinesAtomSVImpl implements ICiCombinedAtomSV {
 	}
 
 	private CiInteraction getParentInteraction(CiInteractionExample example,
-											   CiInteractionExample.Criteria criteria, Calendar calendar){
+											   CiInteractionExample.Criteria criteria, Calendar calendar) {
 		Date startDate = getStartDate(calendar);
 		Date endDate = getEndDate(calendar);
 		criteria.andInteractionTimeBetween(startDate, endDate);
 		List<CiInteraction> interactionList = interactionMapper.selectByExample(example);
-		if(!CollectionUtils.isEmpty(interactionList)){
+		if (!CollectionUtils.isEmpty(interactionList)) {
 			return interactionList.get(0);
 		}
 		return null;
@@ -221,7 +221,7 @@ public class CiCombinesAtomSVImpl implements ICiCombinedAtomSV {
 		//将分钟至0
 		calendar.set(Calendar.MINUTE, 0);
 		//将秒至0
-		calendar.set(Calendar.SECOND,0);
+		calendar.set(Calendar.SECOND, 0);
 		//将毫秒至0
 		calendar.set(Calendar.MILLISECOND, 0);
 		return calendar.getTime();
@@ -230,9 +230,9 @@ public class CiCombinesAtomSVImpl implements ICiCombinedAtomSV {
 	@Override
 	public boolean saveContact(CiContact contact, CiInteractionReqDto interactionReqDto) {
 		boolean flag = false;
-		try{
+		try {
 			contactMapper.insertSelective(contact);
-			if(interactionReqDto != null){
+			if (interactionReqDto != null) {
 				// TODO id
 				Long interactionId = 1L;
 				interactionReqDto.setInteractionId(interactionId);
@@ -240,9 +240,9 @@ public class CiCombinesAtomSVImpl implements ICiCombinedAtomSV {
 				interactionMapper.insertSelective(interaction);
 				List<CiInteractionAttrValueReqDto> attrValueReqDtoList =
 						interactionReqDto.getInteractionAttrValueDtoList();
-				if(!CollectionUtils.isEmpty(attrValueReqDtoList)){
+				if (!CollectionUtils.isEmpty(attrValueReqDtoList)) {
 					List<CiInteractionAttrValue> valueList = new ArrayList<>();
-					for(CiInteractionAttrValueReqDto dto : attrValueReqDtoList){
+					for (CiInteractionAttrValueReqDto dto : attrValueReqDtoList) {
 						//TODO id
 						Long id = 1L;
 						dto.setInteractionAttrValueId(id);
@@ -250,7 +250,7 @@ public class CiCombinesAtomSVImpl implements ICiCombinedAtomSV {
 						dto.setInteractionTime(interactionReqDto.getInteractionTime());
 						dto.setTenantId(interactionReqDto.getTenantId());
 						dto.setCustId(interactionReqDto.getCustId());
-						CiInteractionAttrValue value  = BeanConvertUtil.beanConversion(dto,
+						CiInteractionAttrValue value = BeanConvertUtil.beanConversion(dto,
 								CiInteractionAttrValue.class);
 						valueList.add(value);
 					}
@@ -269,15 +269,15 @@ public class CiCombinesAtomSVImpl implements ICiCombinedAtomSV {
 		// CiChannel
 		CiChannelExample channelExample = new CiChannelExample();
 		List<CiChannel> channelList = channelMapper.selectByExample(channelExample);
-		if(CollectionUtils.isEmpty(channelList)){
+		if (CollectionUtils.isEmpty(channelList)) {
 			Map<Long, CiChannel> redisMap = cacheOperation.getCiLongComponentFromCache(CiWebConstant.CI_CHANNEL_REDIS_KEY);
 			Map<Long, CiChannel> channelMap = new HashMap<>();
-			for(CiChannel channel : channelList){
+			for (CiChannel channel : channelList) {
 				channelMap.put(channel.getChannelId(), channel);
 			}
 			Map<Long, CiChannel> removeMap = MapUtil.getDifferenceSet(redisMap, channelMap);
 			cacheOperation.putCiLongComponentFromCache(CiWebConstant.CI_CHANNEL_REDIS_KEY, channelMap);
-			if(!CollectionUtils.isEmpty(removeMap)){
+			if (!CollectionUtils.isEmpty(removeMap)) {
 				cacheOperation.deleteCiComponentFromCache(CiWebConstant.CI_CHANNEL_REDIS_KEY,
 						removeMap.keySet().toArray());
 			}
@@ -288,37 +288,37 @@ public class CiCombinesAtomSVImpl implements ICiCombinedAtomSV {
 		CiChannelMappingExample.Criteria criteria = mappingExample.createCriteria();
 		criteria.andStateEqualTo(CiWebConstant.DATA_STATE_IN_USE);
 		List<CiChannelMapping> mappingList = mappingMapper.selectByExample(mappingExample);
-		if(!CollectionUtils.isEmpty(mappingList)){
+		if (!CollectionUtils.isEmpty(mappingList)) {
 			Map<String, CiChannelMapping> redisMap =
 					cacheOperation.getCiStringComponentFromCache(CiWebConstant.CI_CHANNEL_MAPPING_REDIS_KEY);
 			Map<String, CiChannelMapping> channelMappingMap = new HashMap<>();
-			for(CiChannelMapping channelMapping : mappingList){
-				channelMappingMap.put(channelMapping.getSrcSysChnlId()+"_"+channelMapping.getSrcSysId(), channelMapping);
+			for (CiChannelMapping channelMapping : mappingList) {
+				channelMappingMap.put(channelMapping.getSrcSysChnlId() + "_" + channelMapping.getSrcSysId(), channelMapping);
 			}
 			Map<String, CiChannelMapping> removeMap = MapUtil.getDifferenceSet(redisMap, channelMappingMap);
 			cacheOperation.putCiStringComponentFromCache(CiWebConstant.CI_CHANNEL_MAPPING_REDIS_KEY, channelMappingMap);
-			if(!CollectionUtils.isEmpty(removeMap)){
+			if (!CollectionUtils.isEmpty(removeMap)) {
 				cacheOperation.deleteCiComponentFromCache(CiWebConstant.CI_CHANNEL_MAPPING_REDIS_KEY,
 						removeMap.keySet().toArray());
 			}
 		}
 
 		// CiInteractionAttr
-		CiInteractionAttrExample attrExample  = new CiInteractionAttrExample();
+		CiInteractionAttrExample attrExample = new CiInteractionAttrExample();
 		CiInteractionAttrExample.Criteria attrCriteria = attrExample.createCriteria();
 		attrCriteria.andStateEqualTo(CiWebConstant.DATA_STATE_IN_USE);
 		List<CiInteractionAttr> attrList = attrMapper.selectByExample(attrExample);
-		if(!CollectionUtils.isEmpty(attrList)){
+		if (!CollectionUtils.isEmpty(attrList)) {
 			Map<String, CiInteractionAttr> redisMap =
-					cacheOperation.getCiStringComponentFromCache(CiWebConstant.INTERACTION_ATTR_REDIS_KEY);
+					cacheOperation.getCiStringComponentFromCache(CiWebConstant.CI_INTERACTION_ATTR_REDIS_KEY);
 			Map<String, CiInteractionAttr> attrMap = new HashMap<>();
-			for(CiInteractionAttr attr : attrList){
-				attrMap.put(attr.getInteractionTypeId()+"_"+attr.getInteractionAttrCode(), attr);
+			for (CiInteractionAttr attr : attrList) {
+				attrMap.put(attr.getInteractionTypeId() + "_" + attr.getInteractionAttrCode(), attr);
 			}
 			Map<String, CiInteractionAttr> removeMap = MapUtil.getDifferenceSet(redisMap, attrMap);
-			cacheOperation.putCiStringComponentFromCache(CiWebConstant.INTERACTION_ATTR_REDIS_KEY, attrMap);
-			if(!CollectionUtils.isEmpty(removeMap)){
-				cacheOperation.deleteCiComponentFromCache(CiWebConstant.INTERACTION_ATTR_REDIS_KEY,
+			cacheOperation.putCiStringComponentFromCache(CiWebConstant.CI_INTERACTION_ATTR_REDIS_KEY, attrMap);
+			if (!CollectionUtils.isEmpty(removeMap)) {
+				cacheOperation.deleteCiComponentFromCache(CiWebConstant.CI_INTERACTION_ATTR_REDIS_KEY,
 						removeMap.keySet().toArray());
 			}
 		}
@@ -326,16 +326,16 @@ public class CiCombinesAtomSVImpl implements ICiCombinedAtomSV {
 		// CiInteractionCategory
 		CiInteractionCategoryExample categoryExample = new CiInteractionCategoryExample();
 		List<CiInteractionCategory> categoryList = categoryMapper.selectByExample(categoryExample);
-		if(!CollectionUtils.isEmpty(categoryList)){
+		if (!CollectionUtils.isEmpty(categoryList)) {
 			Map<Long, CiInteractionCategory> redisMap =
 					cacheOperation.getCiLongComponentFromCache(CiWebConstant.CI_INTERACTION_CATEGORY_REDIS_KEY);
 			Map<Long, CiInteractionCategory> categoryMap = new HashMap<>();
-			for(CiInteractionCategory category : categoryList){
+			for (CiInteractionCategory category : categoryList) {
 				categoryMap.put(category.getInteractionCategoryId(), category);
 			}
 			Map<Long, CiInteractionCategory> removeMap = MapUtil.getDifferenceSet(redisMap, categoryMap);
 			cacheOperation.putCiLongComponentFromCache(CiWebConstant.CI_INTERACTION_CATEGORY_REDIS_KEY, categoryMap);
-			if(!CollectionUtils.isEmpty(removeMap)){
+			if (!CollectionUtils.isEmpty(removeMap)) {
 				cacheOperation.deleteCiComponentFromCache(CiWebConstant.CI_INTERACTION_CATEGORY_REDIS_KEY,
 						removeMap.keySet().toArray());
 			}
@@ -346,7 +346,20 @@ public class CiCombinesAtomSVImpl implements ICiCombinedAtomSV {
 		CiInteractionTypeExample.Criteria typeCriteria = typeExample.createCriteria();
 		typeCriteria.andStateEqualTo(CiWebConstant.DATA_STATE_IN_USE);
 		List<CiInteractionType> typeList = typeMapper.selectByExample(typeExample);
-
+		if (!CollectionUtils.isEmpty(typeList)) {
+			Map<String, CiInteractionType> redisMap =
+					cacheOperation.getCiStringComponentFromCache(CiWebConstant.CI_INTERACTION_TYPE_REDIS_KEY);
+			Map<String, CiInteractionType> typeMap = new HashMap<>();
+			for (CiInteractionType type : typeList) {
+				typeMap.put(type.getSrcInteractionTypeId() + "_" + type.getSrcSysId(), type);
+			}
+			Map<String, CiInteractionType> removeMap = MapUtil.getDifferenceSet(redisMap, typeMap);
+			cacheOperation.putCiStringComponentFromCache(CiWebConstant.CI_INTERACTION_TYPE_REDIS_KEY, typeMap);
+			if (!CollectionUtils.isEmpty(removeMap)) {
+				cacheOperation.deleteCiComponentFromCache(CiWebConstant.CI_INTERACTION_TYPE_REDIS_KEY,
+						removeMap.keySet().toArray());
+			}
+		}
 
 		return false;
 	}
