@@ -14,6 +14,7 @@
         <module>crm-ci</module>
         <module>crm-cm</module>
         <module>crm-cache</module>
+        <module>crm-eshop</module>
     </modules>
 
     <packaging>pom</packaging>
