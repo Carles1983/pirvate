@@ -65,7 +65,7 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		<table tableName="cm_account" >
+		<table tableName="cm_account_h" >
 			<property name="enableInsert" value="true"/>
 			<property name="enableSelectByPrimaryKey" value="true"/>
 			<property name="enableSelectByExample" value="true"/>
