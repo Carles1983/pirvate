@@ -1,7 +1,7 @@
 package com.aii.crm.cm.web.controller;
 
-import com.aii.crm.cm.web.dto.req.AccountReqDto;
-import com.aii.crm.cm.web.dto.res.AccountResDto;
+import com.aii.crm.cm.web.dto.req.CmAccountInfoReqDto;
+import com.aii.crm.cm.web.dto.res.CmAccountInfoResDto;
 import com.aii.crm.cm.web.dto.res.PaymentMethodResDto;
 import java.util.List;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,27 +15,27 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccountController {
 
 	@RequestMapping(value = "/account", method = RequestMethod.POST)
-	public Long createAccount(@RequestBody AccountReqDto accountReqDto){
+	public Long createAccount(@RequestBody CmAccountInfoReqDto accountReqDto){
 		return null;
 	}
 
 	@RequestMapping(value = "/account/{accountId}", method = RequestMethod.POST)
-	public Long createAccountWithAccountId(@PathVariable Long accountId, @RequestBody AccountReqDto accountReqDto){
+	public Long createAccountWithAccountId(@PathVariable Long accountId, @RequestBody CmAccountInfoReqDto accountReqDto){
 		return null;
 	}
 
 	@RequestMapping(value = "/account/{accountId}", method = RequestMethod.PUT)
-	public Long modifyAccountWithAccountId(@PathVariable Long accountId, @RequestBody AccountReqDto accountReqDto){
+	public Long modifyAccountWithAccountId(@PathVariable Long accountId, @RequestBody CmAccountInfoReqDto accountReqDto){
 		return null;
 	}
 
 	@RequestMapping(value = "/account/{customerId}", method = RequestMethod.GET)
-	public List<AccountResDto> listAccountWithCustomerId(@PathVariable Long customerId){
+	public List<CmAccountInfoResDto> listAccountWithCustomerId(@PathVariable Long customerId){
 		return null;
 	}
 
 	@RequestMapping(value = "/account/{accountId}", method = RequestMethod.GET)
-	public AccountResDto getAccountWithAccountId(@PathVariable Long accountId){
+	public CmAccountInfoResDto getAccountWithAccountId(@PathVariable Long accountId){
 		return null;
 	}
 
@@ -51,7 +51,7 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/account/{billId}", method = RequestMethod.GET)
-	public AccountResDto getAccountByBillId(@PathVariable String billId) {
+	public CmAccountInfoResDto getAccountByBillId(@PathVariable String billId) {
 		return null;
 	}
 
