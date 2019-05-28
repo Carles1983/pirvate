@@ -36,7 +36,7 @@ public class GroupCustomerController {
 	}
 
 	/**
-	 *  保存客户接触信息
+	 *  保存客户联系信息
 	 **/
 	@RequestMapping(value = "/groupCustomer/contact", method = RequestMethod.POST)
 	public Boolean saveOrgContact(@RequestBody List<CmContactMediumReqDto> contactMediumDtos) {
