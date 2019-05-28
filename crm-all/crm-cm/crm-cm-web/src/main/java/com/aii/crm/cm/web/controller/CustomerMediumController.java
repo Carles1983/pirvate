@@ -1,9 +1,9 @@
 package com.aii.crm.cm.web.controller;
 
-import com.aii.crm.cm.web.dto.req.AddressReqDto;
-import com.aii.crm.cm.web.dto.req.ContactReqDto;
+import com.aii.crm.cm.web.dto.req.CmAddressReqDto;
+import com.aii.crm.cm.web.dto.req.CmContactMediumReqDto;
 import com.aii.crm.cm.web.dto.req.PreferChannelReqDto;
-import com.aii.crm.cm.web.dto.res.AddressResDto;
+import com.aii.crm.cm.web.dto.res.CmAddressResDto;
 import com.aii.crm.cm.web.dto.res.ElectronMediumResDto;
 import com.aii.crm.cm.web.dto.res.PreferChannelResDto;
 import java.util.List;
@@ -20,7 +20,7 @@ public class CustomerMediumController {
 
 	@RequestMapping(value = "/address/{customerId}", method = RequestMethod.POST)
 	public Long createCustomerAddress(@PathVariable Long customerId,
-									  @RequestBody AddressReqDto address) {
+									  @RequestBody CmAddressReqDto address) {
 		return null;
 	}
 
@@ -30,7 +30,7 @@ public class CustomerMediumController {
 	}
 
 	@RequestMapping(value = "/address/{customerId}", method = RequestMethod.GET)
-	public List<AddressResDto> acquireCustomerAddresses(
+	public List<CmAddressResDto> acquireCustomerAddresses(
 			@PathVariable Long customerId,
 			@RequestParam Integer start,
 			@RequestParam Integer offset) {
@@ -39,14 +39,14 @@ public class CustomerMediumController {
 
 	@RequestMapping(value = "address/delivery/{customerId}", method = RequestMethod.POST)
 	public Long saveCustomerDeliveryAddress(@PathVariable Long customerId,
-											@RequestBody AddressReqDto address) {
+											@RequestBody CmAddressReqDto address) {
 		return null;
 	}
 
 	@RequestMapping(value = "address/delivery/{customerId}/{relationId}", method = RequestMethod.PUT)
 	public Long modifyDeliveryCustomerAddress(@PathVariable Long customerId,
 											  @PathVariable Long relationId,
-											  @RequestBody AddressReqDto address) {
+											  @RequestBody CmAddressReqDto address) {
 		return null;
 	}
 
@@ -56,7 +56,7 @@ public class CustomerMediumController {
 	}
 
 	@RequestMapping(value = "/address/delivery/{customerId}", method = RequestMethod.GET)
-	public List<AddressResDto> acquireCustomerDeliveryAddresses(
+	public List<CmAddressResDto> acquireCustomerDeliveryAddresses(
 			@PathVariable String customerId) {
 		return null;
 	}
@@ -67,7 +67,7 @@ public class CustomerMediumController {
 	}
 
 	@RequestMapping(value = "/address/bill/{customerId}", method = RequestMethod.GET)
-	public List<AddressResDto> acquireCustomerBillAddresses(
+	public List<CmAddressResDto> acquireCustomerBillAddresses(
 			@PathVariable Long customerId,
 			@RequestParam Integer start,
 			@RequestParam Integer offset) {
@@ -88,13 +88,13 @@ public class CustomerMediumController {
 
 	@RequestMapping(value = "/address/{customerId}{relationId}", method = RequestMethod.PUT)
 	public Integer modifyCustomerAddress(@PathVariable Long customerId,
-										 @PathVariable Long relationId, @RequestBody AddressReqDto address) {
+										 @PathVariable Long relationId, @RequestBody CmAddressReqDto address) {
 		return null;
 	}
 
 	@RequestMapping(value = "/contact/{customerId}", method = RequestMethod.POST)
 	public Long createCustomerContact(@PathVariable Long customerId,
-									  @RequestBody ContactReqDto contact) {
+									  @RequestBody CmContactMediumReqDto contact) {
 		return null;
 	}
 
@@ -120,7 +120,7 @@ public class CustomerMediumController {
 
 	@RequestMapping(value = "/contact/{customerId}/{relationId}", method = RequestMethod.PUT)
 	public Integer modifyCustomerContactWithRelaId(@PathVariable Long customerId, @PathVariable Long relationId,
-												   @RequestBody ContactReqDto address) {
+												   @RequestBody CmContactMediumReqDto address) {
 		return null;
 	}
 
@@ -128,7 +128,7 @@ public class CustomerMediumController {
 	 * 批量修改客户联系信息
 	 */
 	@RequestMapping(value = "/contact/batch/{customerId}", method = RequestMethod.PUT)
-	public Integer modifyCustomerContact(@PathVariable Long customerId, @RequestBody List<ContactReqDto> addresses) {
+	public Integer modifyCustomerContact(@PathVariable Long customerId, @RequestBody List<CmContactMediumReqDto> addresses) {
 		return null;
 	}
 
@@ -143,7 +143,7 @@ public class CustomerMediumController {
 	}
 
 	@RequestMapping(value = "/address/delivery/contact/{relationId}", method = RequestMethod.GET)
-	public AddressResDto getCustomerDeliveryAddressesById(@PathVariable Long relationId) {
+	public CmAddressResDto getCustomerDeliveryAddressesById(@PathVariable Long relationId) {
 		return null;
 	}
 
