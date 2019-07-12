@@ -1,0 +1,82 @@
+debug: true
+server:
+  port: 15152
+spring:
+  application:
+    name: orderShard
+  main:
+    allow-bean-definition-overriding: true
+  redis:
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1
+        min-idle: 0
+    cluster:
+      nodes: 10.21.14.164:6381,10.21.14.164:6382,10.21.14.165:6381,10.21.14.165:6382,10.21.14.166:6381,10.21.14.166:6382
+  shardingsphere:
+    datasource:
+      names: master0,master1,master0slave0,master1slave0
+      master0:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://10.21.14.165:3306/order?serverTimezone=Asia/Shanghai&useSSL=false
+        username: root
+        password: 123456
+      master0slave0:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://10.21.14.166:3306/order?serverTimezone=Asia/Shanghai&useSSL=false
+        username: root
+        password: 123456
+      master1:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://10.21.14.165:3307/order?serverTimezone=Asia/Shanghai&useSSL=false
+        username: root
+        password: 123456
+      master1slave0:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://10.21.14.166:3307/order?serverTimezone=Asia/Shanghai&useSSL=false
+        username: root
+        password: 123456
+    sharding:
+      tables:
+        ord_cust:
+          actual-data-nodes: ds$->{0..1}.ord_cust$->{0..4}
+          database-strategy:
+            standard:
+              shardingColumn: cust_id
+              precise-algorithm-class-name: com.ai.order.sharding.DatabaseShardingAlgorithm
+          table-strategy:
+            standard:
+              shardingColumn: cust_id
+              precise-algorithm-class-name: com.ai.order.sharding.TableShardingAlgorithm
+              range-algorithm-class-name: com.ai.order.sharding.TableShardingAlgorithm
+      master-slave-rules:
+        ds0:
+          master-data-source-name: master0
+          slave-data-source-names: master0slave0
+        ds1:
+          master-data-source-name: master1
+          slave-data-source-names: master1slave0
+    props:
+      sql:
+        show: true
+# mybatis-spring-boot-starter
+mybatis:
+  type-aliases-package: com.ai.order
+  mapper-locations: classpath:com/ai/order/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    default-fetch-size: 100
+    default-statement-timeout: 30
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+# pagehelper-spring-boot-starter
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
