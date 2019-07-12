@@ -13,6 +13,11 @@
         <module>api</module>
         <module>gateway</module>
         <module>auth</module>
+        <module>crm-order</module>
+        <module>crm-order-dadb</module>
+        <module>rocketmq-producer</module>
+        <module>rocketmq-consumer</module>
+        <module>hbase</module>
     </modules>
     <packaging>pom</packaging>
 

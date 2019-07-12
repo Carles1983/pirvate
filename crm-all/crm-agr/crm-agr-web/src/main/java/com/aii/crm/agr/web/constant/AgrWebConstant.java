@@ -1,5 +1,11 @@
 package com.aii.crm.agr.web.constant;
 
+/**
+ * @author: soane
+ * @Date: 2019/6/7
+ * @Time: 11:46
+ * @Description: TODO
+ */
 public class AgrWebConstant {
 
 	private AgrWebConstant(){}
@@ -7,7 +13,9 @@ public class AgrWebConstant {
 	public static final Long AGR_STATE_INVALID = 0L;
 	public static final Long AGR_STATE_VALID = 1L;
 
-	//协议状态
+	/**
+	 * 协议状态
+	 */
 	public static final Long AGR_STATUS_DRAFT = 9010L;
 	public static final Long AGR_STATUS_NEGOTIATED = 9020L;
 	public static final Long AGR_STATUS_CONFIRM = 9021L;

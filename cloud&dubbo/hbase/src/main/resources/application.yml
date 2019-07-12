@@ -1,0 +1,24 @@
+debug: true
+server:
+  port: 15155
+spring:
+  application:
+    name: hbase
+  main:
+    allow-bean-definition-overriding: true
+  redis:
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1
+        min-idle: 0
+    cluster:
+      nodes: 10.21.14.164:6381,10.21.14.164:6382,10.21.14.165:6381,10.21.14.165:6382,10.21.14.166:6381,10.21.14.166:6382
+hbase:
+  config:
+    hbase.zookeeper.quorum: 10.21.14.164,10.21.14.165,10.21.14.166
+    hbase.zookeeper.property.clientPort: 2181
+    hbase.master: 10.21.14.164
+    fs.defaultFS: hdfs://10.21.14.164:9800
+    fs.trash.interval: 1

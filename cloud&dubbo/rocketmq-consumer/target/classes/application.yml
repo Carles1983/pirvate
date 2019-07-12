@@ -1,0 +1,8 @@
+debug: true
+server:
+  port: 15154
+spring:
+  application:
+    name: producer
+rocketmq:
+  name-server: 10.21.14.165:9876;10.21.14.166:9876

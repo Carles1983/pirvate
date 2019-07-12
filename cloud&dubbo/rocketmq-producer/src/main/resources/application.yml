@@ -1,0 +1,18 @@
+debug: true
+management:
+  health:
+    elasticsearch:
+      enabled: false
+server:
+  port: 15153
+spring:
+  application:
+    name: producer
+  data:
+    elasticsearch:
+      clusterName: es
+      clusterNodes: 10.21.14.164:9300,10.21.14.165:9300,10.21.14.166:9300
+rocketmq:
+  name-server: 10.21.14.165:9876;10.21.14.166:9876
+  producer:
+    group:  g-rocket-producer
