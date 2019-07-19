@@ -2,6 +2,8 @@ package com.ai.order.controller;
 
 import com.ai.order.bo.OrdCust;
 import com.ai.order.service.OrderCustomerService;
+import com.ai.order.soap.WebServiceDemoService;
+import com.ai.order.soap.WebServiceDemoService_Service;
 import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +49,14 @@ public class OrderCustomerController {
 			return list.size();
 		}
 		return 0;
+	}
+
+	@RequestMapping(value = "/customer/soap", method = RequestMethod.GET)
+	public String queryCustomer(@RequestParam String name){
+		WebServiceDemoService_Service webServiceDemoService_service = new WebServiceDemoService_Service();
+		WebServiceDemoService webServiceDemoService = webServiceDemoService_service.getWebServiceDemoServiceImplPort();
+		String result = webServiceDemoService.hello(name);
+		return result;
 	}
 
 }
