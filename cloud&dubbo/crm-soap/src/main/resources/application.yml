@@ -1,0 +1,8 @@
+debug: true
+server:
+  port: 15156
+spring:
+  application:
+    name: order
+  main:
+    allow-bean-definition-overriding: true
