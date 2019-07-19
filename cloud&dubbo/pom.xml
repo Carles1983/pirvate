@@ -18,6 +18,7 @@
         <module>rocketmq-producer</module>
         <module>rocketmq-consumer</module>
         <module>hbase</module>
+        <module>crm-soap</module>
     </modules>
     <packaging>pom</packaging>
 

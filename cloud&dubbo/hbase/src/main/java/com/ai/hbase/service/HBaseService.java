@@ -8,4 +8,6 @@ package com.ai.hbase.service;
  */
 public interface HBaseService {
 	String getOrdCust(String table);
+
+	String deleteOrdCust(String table);
 }

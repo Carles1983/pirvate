@@ -53,4 +53,9 @@ public class HBaseController {
 		return result;
 	}
 
+	@RequestMapping(value = "/hbase/customer", method = RequestMethod.DELETE)
+	public String deleteOrderCustomer(){
+		String result = hBaseService.deleteOrdCust("ord-cust");
+		return result;
+	}
 }
