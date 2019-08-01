@@ -19,6 +19,8 @@
         <module>rocketmq-consumer</module>
         <module>hbase</module>
         <module>crm-soap</module>
+        <module>spring-security</module>
+        <module>spring-oauth2</module>
     </modules>
     <packaging>pom</packaging>
 
