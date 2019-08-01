@@ -1,0 +1,16 @@
+debug: true
+server:
+  port: 15157
+  servlet:
+    session:
+      timeout: 60
+spring:
+  application:
+    name: security
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://10.21.14.165:3307/security?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: 123456
